@@ -28,10 +28,12 @@ const MAP_QUERY = 'mutation Map(id: String!, stubhub: Int!) { mapEvent(id: $id, 
 
 
 function Event({
-  bg_event_id, event_name, venue_name, event_date,
+  updateSearch, bg_event_id, event_name, venue_name, event_date
 }) {
+  const handleClick = () => updateSearch({ event: event_name, venue: venue_name });
+  // (func) => () => func({ event: event_name, venue: venue_name });
   return (
-    <ListItem button key={bg_event_id}>
+    <ListItem button key={bg_event_id} onClick={handleClick}>
       <ListItemText primary={event_name} secondary={`${venue_name} || ${new Date(parseInt(event_date))}`} />
     </ListItem>
   );
@@ -41,40 +43,28 @@ function StubhubEvent({ }) {
   return (<li>Hi</li>);
 }
 
-function Stubhub() {
-  const [values, setValues] = useState({
-    event: '',
-    venue: '',
-  });
-  const [checks, setChecks] = useState({
-    updateSearch: true,
-  });
+function Stubhub({event, venue, updateSearchEnabled, toggleUpdateSearchEnabled, updateSearch}) {
 
-  const handleCheck = name => (event) => {
-    setChecks({ ...checks, [name]: event.target.checked });
-  };
 
-  const handleChange = name => (event) => {
-    setValues({ ...values, [name]: event.target.value });
-  };
+  const handleChange = () => () => {};
 
   return (
     <>
       <FormControlLabel
         control={
-          <Switch checked={checks.updateSearch} onChange={handleCheck('updateSearch')} value="updateSearch" />
+          <Switch checked={updateSearchEnabled} onChange={toggleUpdateSearchEnabled} value="updateSearchEnabled" />
         }
         label="Update search when clicking events"
       />
       <TextField
         label="Event Name"
-        value={values.event}
+        value={event}
         onChange={handleChange('event')}
         margin="normal"
       />
       <TextField
         label="Venue"
-        value={values.venue}
+        value={venue}
         onChange={handleChange('venue')}
         margin="normal"
       />
@@ -82,7 +72,7 @@ function Stubhub() {
   );
 }
 
-function Uptick() {
+function Uptick({ updateSearch }) {
   const PER_PAGE = 100;
 
   const [offset, setOffset] = useState(0);
@@ -121,7 +111,7 @@ function Uptick() {
       >
         {loading && 'Loading...'}
         {error && 'Something went wrong'}
-        {data && data.list.map(event => (<Event {...event} />
+        {data && data.list.map(event => (<Event key={event.bg_event_id} updateSearch={updateSearch} {...event} />
         ))}
       </div>
       <div style={{ flexFlow: '0 1 140px' }}>
@@ -149,6 +139,17 @@ function Uptick() {
 }
 
 function App() {
+  const [stubHubSearch, setStubHubSearch] = useState({
+    event: '',
+    venue: '',
+  });
+
+  const [updateSearchEnabled, setToggleUpdateSearch] = useState(true);
+
+  const updateSearch = (...args) => updateSearchEnabled && setStubHubSearch(...args);
+
+  const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
+
   return (
     <>
       <CssBaseline />
@@ -161,13 +162,13 @@ function App() {
       <Grid container style={{ height: 'calc(100% - 114px)' }}>
         <Grid item style={{ height: '100%', width: '50%' }}>
           <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
-            <Uptick />
+            <Uptick updateSearch={updateSearch} />
           </Paper>
         </Grid>
 
         <Grid item style={{ height: '100%', width: '50%' }}>
           <Paper className="stubhub">
-            <Stubhub />
+            <Stubhub {...stubHubSearch} toggleUpdateSearchEnabled={toggleUpdateSearchEnabled} updateSearchEnabled={updateSearchEnabled} />
           </Paper>
         </Grid>
       </Grid>
