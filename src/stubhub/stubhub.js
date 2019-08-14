@@ -1,15 +1,89 @@
 // https://brokergenius.atlassian.net/wiki/spaces/BF/pages/65817627/Stubhub+API+Documentation?preview=/65817627/65817743/API%20Reference%20-%20Event.pdf
 const fetch = require('node-fetch');
 
+/*
+curl 'https://www.stubhub.com/bfx/api/search/suggest/v3?term=knicks&sort=popularity%20desc%2C%20eventDateLocal%20asc%2C&perfRows=5&entityList=event%2Cperformer%2Cvenue&minAvailableTickets=0&includeNoneventEntities=true&shstore=1&point=40.76955%2C-74.02042&radius=200&lang=true&urgencyMessaging=true&timeZoneOffsetInMinutes=240&withEventCount=true&enablePopular=false' -H 'accept: application/json'
+*/
+
 // https://developer.stubhub.com/searchevent/apis/get/search/events/v3
 
-const searchUrl = 'https://api.stubhub.com/search/catalog/events/v3';
+
+const searchUrl = process.env.STUBHUB_SEARCH_URL;
+const loginUrl = process.env.STUBHUB_LOGIN_URL;
+
+const api = { accesskey: null, refreshkey: null };
 
 const qs = params => Object.keys(params)
   .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
   .join('&');
 
-const findEvents = fields => fetch(`${searchUrl}?${qs(fields)}`, { headers: { 'content-type': 'application/json' } });
+
+const login = ({ user, password }) => {
+  const atob = str => Buffer.from(str, 'binary').toString('base64');
+  const tokens = {
+    key: process.env.STUBHUB_KEY,
+    secret: process.env.STUBHUB_SECRET,
+  };
+  const authKey = atob(`${tokens.key}:${tokens.secret}`);
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    Authorization: `Basic ${authKey}`,
+  };
+
+  const body = `grant_type=password&username=${encodeURIComponent(user)}&password=${encodeURIComponent(password)}`;
+
+  return fetch(loginUrl, {
+    body,
+    headers,
+    method: 'POST',
+  })
+    .then(response => response.json())
+    .then(json => json.access_token);
+  /*
+    .then((response) => {
+      if (response.access_token) {
+        api.accesskey = response.access_token;
+        api.refreshkey = response.refresh_token;
+        // success
+      }
+    }); */
+};
+
+class KeyStore {
+  async getKey() {
+    if (!this.keyPromise) {
+      this.keyPromise = await login({
+        user: process.env.STUBHUB_USER,
+        password: process.env.STUBHUB_PASSWORD,
+      });
+    }
+    const data = await this.keyPromise;
+    /*
+    if (!this.stillValid(data)) {
+      this.invalidate();
+      return this.getKey();
+    }
+*/
+    return data;
+  }
+
+  invalidate() {
+    this.keyPromise = null;
+  }
+
+/*
+  stillValid(data) {
+    // check expiration or whatever
+  }
+  */
+}
+
+const keys = new KeyStore();
+
+const findEvents = fields => fetch(`${searchUrl}?${qs(fields)}`, {
+  headers: { 'content-type': 'application/json', authorization: `Bearer ${keys.getKey()}` },
+});
+
 
 export default findEvents;
 
