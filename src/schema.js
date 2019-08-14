@@ -4,26 +4,22 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import { queries, mutations } from './events/schema';
+import events from './events/schema';
+import stubhub from './stubhub/schema';
 
 export default new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-      ...queries,
+      ...events.queries,
+      ...stubhub.queries,
       hi: {
         type: GraphQLString,
         args: {
           name: { type: GraphQLString },
         },
         resolve(v, { name }) {
-          return `world ${name}`;
-        },
-      },
-      goodbye: {
-        type: GraphQLString,
-        resolve() {
-          return 'goodbye';
+          return `hello ${name}`;
         },
       },
     },
@@ -32,7 +28,7 @@ export default new GraphQLSchema({
   mutation: new GraphQLObjectType({
     name: 'RootMutationType',
     fields: {
-      ...mutations,
+      ...events.mutations,
     },
   }),
 });

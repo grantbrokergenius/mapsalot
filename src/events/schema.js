@@ -43,4 +43,4 @@ const mutations = {
   },
 };
 
-export { queries, mutations };
+export default { queries, mutations };

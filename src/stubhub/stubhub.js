@@ -1,15 +1,17 @@
 // https://brokergenius.atlassian.net/wiki/spaces/BF/pages/65817627/Stubhub+API+Documentation?preview=/65817627/65817743/API%20Reference%20-%20Event.pdf
 const fetch = require('node-fetch');
 
+// https://developer.stubhub.com/searchevent/apis/get/search/events/v3
+
 const searchUrl = 'https://api.stubhub.com/search/catalog/events/v3';
 
 const qs = params => Object.keys(params)
   .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
   .join('&');
 
-const findEvents = fields => fetch(`${searchUrl}?${qs(fields)}`);
+const findEvents = fields => fetch(`${searchUrl}?${qs(fields)}`, { headers: { 'content-type': 'application/json' } });
 
-export default { findEvents };
+export default findEvents;
 
 /*
 
