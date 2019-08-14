@@ -7,10 +7,23 @@ import {
 } from 'graphql-hooks';
 
 import Event from './Event';
+import { Typography, CircularProgress } from '@material-ui/core';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bg_event_id, event_name, venue_name, event_date } }';
 
 const MAP_QUERY = 'mutation Map(id: String!, stubhub: Int!) { mapEvent(id: $id, stubhub: $stubhub) { ok } }';
+
+
+function Error() {
+  return (
+    <>
+    <Typography>Something went wrong</Typography>
+    <Button
+          variant="contained"
+          color="primary"
+        >Retry</Button>    </>
+  )
+}
 
 export default function Uptick({ updateSearch }) {
   const PER_PAGE = 100;
@@ -49,9 +62,9 @@ export default function Uptick({ updateSearch }) {
       <div
         style={{ flexFlow: '1 0 auto', overflow: 'auto' }}
       >
-        {loading && 'Loading...'}
-        {error && 'Something went wrong'}
-        {data && data.list.map(event => (<Event key={event.bg_event_id} updateSearch={updateSearch} {...event} />
+        {loading && <CircularProgress/>}
+        {error && <Error/>}
+        {data && data.list && data.list.map(event => (<Event key={event.bg_event_id} updateSearch={updateSearch} {...event} />
         ))}
       </div>
       <div style={{ flexFlow: '0 1 140px' }}>
