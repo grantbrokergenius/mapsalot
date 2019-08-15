@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import { useQuery } from 'graphql-hooks';
+import EventContext from '../context/EventContext';
 
 const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String, $venue_name: String) {
    findStubHubEvents(offset: $offset, event_name: $event_name, venue_name: $venue_name){
@@ -15,22 +16,24 @@ function StubhubEvent({ }) {
   return (<li>Hi</li>);
 }
 
-export default function Stubhub({event, venue, updateSearchEnabled, toggleUpdateSearchEnabled, updateSearch}) {
-
-
-
+export default function Stubhub({
+  event, venue, updateSearchEnabled, toggleUpdateSearchEnabled, updateSearch,
+}) {
   const [values, setValues] = useState({
-    event: event,
-    venue: venue,
+    event,
+    venue,
   });
-  
-  const handleChange = name => (event) => {
+
+  const { activeEventId } = useContext(EventContext);
+
+
+  const handleChange = (name) => (event) => {
     const vals = { ...values, [name]: event.target.value };
     updateSearch(vals);
     setValues(vals);
   };
 
-//  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables: { offset: 0, event_name: event, venue_name: venue } });
+  //  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables: { offset: 0, event_name: event, venue_name: venue } });
 
 
   return (

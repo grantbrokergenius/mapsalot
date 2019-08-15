@@ -46,14 +46,14 @@ export default function Uptick() {
   const { useMapQuery } = useManualQuery(MAP_QUERY);
 
 
-  const handleChange = name => (event) => {
+  const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
   const setSelected = (id, event, venue) => {
     setActiveEventId(id);
-    updateSearch(false)(event,venue);
-  }
+    updateSearch(false)(event, venue);
+  };
 
   return (
     <>
@@ -76,7 +76,7 @@ export default function Uptick() {
       >
         {loading && <CircularProgress />}
         {error && <Error />}
-        {data && data.list && data.list.map(event => (<Event key={event.bg_event_id} setSelected={setSelected} {...event} />
+        {data && data.list && data.list.map((event) => (<Event key={event.bg_event_id} setSelected={setSelected} {...event} />
         ))}
       </div>
       <div style={{ flexFlow: '0 1 140px' }}>

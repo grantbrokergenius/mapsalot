@@ -11,15 +11,13 @@ curl 'https://www.stubhub.com/bfx/api/search/suggest/v3?term=knicks&sort=popular
 const searchUrl = process.env.STUBHUB_SEARCH_URL;
 const loginUrl = process.env.STUBHUB_LOGIN_URL;
 
-const api = { accesskey: null, refreshkey: null };
-
-const qs = params => Object.keys(params)
-  .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+const qs = (params) => Object.keys(params)
+  .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
   .join('&');
 
 
 const login = ({ user, password }) => {
-  const atob = str => Buffer.from(str, 'binary').toString('base64');
+  const atob = (str) => Buffer.from(str, 'binary').toString('base64');
   const tokens = {
     key: process.env.STUBHUB_KEY,
     secret: process.env.STUBHUB_SECRET,
@@ -29,7 +27,6 @@ const login = ({ user, password }) => {
     'Content-Type': 'application/x-www-form-urlencoded',
     Authorization: `Basic ${authKey}`,
   };
-
   const body = `grant_type=password&username=${encodeURIComponent(user)}&password=${encodeURIComponent(password)}`;
 
   return fetch(loginUrl, {
@@ -37,8 +34,8 @@ const login = ({ user, password }) => {
     headers,
     method: 'POST',
   })
-    .then(response => response.json())
-    .then(json => json.access_token);
+    .then((response) => response.json())
+    .then((json) => json.access_token);
   /*
     .then((response) => {
       if (response.access_token) {
@@ -57,7 +54,7 @@ class KeyStore {
         password: process.env.STUBHUB_PASSWORD,
       });
     }
-    const data = await this.keyPromise;
+    const data = this.keyPromise;
     /*
     if (!this.stillValid(data)) {
       this.invalidate();
@@ -80,10 +77,17 @@ class KeyStore {
 
 const keys = new KeyStore();
 
-const findEvents = fields => fetch(`${searchUrl}?${qs(fields)}`, {
-  headers: { 'content-type': 'application/json', authorization: `Bearer ${keys.getKey()}` },
+const transform = ({
+  id, name, eventDateLocal, venue,
+}) => ({
+  stubhub_event_id: id, event_date: eventDateLocal, event_name: name, venue_name: `${venue.name}, ${venue.city}, ${venue.state}`,
 });
 
+const findEvents = async (fields) => fetch(`${searchUrl}?${qs(fields)}`, {
+  headers: { Authorization: `Bearer ${await keys.getKey()}` },
+}).then((res) => res.json())
+  .then((json) => json.events)
+  .then((events) => events.map(transform));
 
 export default findEvents;
 
