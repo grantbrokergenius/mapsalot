@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
@@ -8,6 +8,7 @@ import {
 
 import { Typography, CircularProgress } from '@material-ui/core';
 import Event from './Event';
+import EventContext from '../context/EventContext';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bg_event_id, event_name, venue_name, event_date } }';
 
@@ -28,7 +29,7 @@ Retry
   );
 }
 
-export default function Uptick({ updateSearch }) {
+export default function Uptick() {
   const PER_PAGE = 100;
 
   const [offset, setOffset] = useState(0);
@@ -36,6 +37,9 @@ export default function Uptick({ updateSearch }) {
     event_name: '',
     venue_name: '',
   });
+
+  const { setActiveEventId, activeEventId } = useContext(EventContext);
+  const { updateSearch } = useContext(EventContext);
 
   const { loading, error, data } = useQuery(LIST_QUERY, { variables: { offset } });
 
@@ -45,6 +49,11 @@ export default function Uptick({ updateSearch }) {
   const handleChange = name => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
+
+  const setSelected = (id, event, venue) => {
+    setActiveEventId(id);
+    updateSearch(false)(event,venue);
+  }
 
   return (
     <>
@@ -67,7 +76,7 @@ export default function Uptick({ updateSearch }) {
       >
         {loading && <CircularProgress />}
         {error && <Error />}
-        {data && data.list && data.list.map(event => (<Event key={event.bg_event_id} updateSearch={updateSearch} {...event} />
+        {data && data.list && data.list.map(event => (<Event key={event.bg_event_id} setSelected={setSelected} {...event} />
         ))}
       </div>
       <div style={{ flexFlow: '0 1 140px' }}>

@@ -12,6 +12,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { createMuiTheme, withTheme } from '@material-ui/core/styles';
 import Stubhub from './components/StubHub';
 import Uptick from './components/Uptick';
+import EventContext from './context/EventContext';
 
 
 const client = new GraphQLClient({
@@ -24,6 +25,8 @@ function App() {
     venue: '',
   });
 
+  const [activeEventId, setActiveEventId] = useState(null);
+
   const [updateSearchEnabled, setToggleUpdateSearch] = useState(true);
 
   const updateSearch = (override) => (...args) => (updateSearchEnabled || override) && setStubHubSearch(...args);
@@ -31,7 +34,11 @@ function App() {
   const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
 
   return (
-    <>
+    <EventContext.Provider value={{
+       activeEventId,
+       setActiveEventId,
+       stubhubSearchEvent: stubHubSearch.event,
+      stubhubSearchVenue: stubHubSearch.venue, toggleUpdateSearchEnabled, updateSearchEnabled, updateSearch }}>
       <CssBaseline />
       <AppBar position="relative" color="primary">
         <Toolbar>
@@ -42,7 +49,7 @@ function App() {
       <Grid container style={{ height: 'calc(100% - 114px)' }}>
         <Grid item style={{ height: '100%', width: '50%' }}>
           <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
-            <Uptick updateSearch={updateSearch(false)} />
+            <Uptick/>
           </Paper>
         </Grid>
 
@@ -52,7 +59,7 @@ function App() {
           </Paper>
         </Grid>
       </Grid>
-    </>
+    </EventContext.Provider>
   );
 }
 

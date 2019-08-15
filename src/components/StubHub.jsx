@@ -30,7 +30,7 @@ export default function Stubhub({event, venue, updateSearchEnabled, toggleUpdate
     setValues(vals);
   };
 
-  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables: { offset: 0, event_name: event, venue_name: venue } });
+//  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables: { offset: 0, event_name: event, venue_name: venue } });
 
 
   return (

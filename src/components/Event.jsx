@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import EventContext from '../context/EventContext';
+import dateformat from 'dateformat';
 
 export default function Event({
-  updateSearch, bg_event_id, event_name, venue_name, event_date
+  setSelected, bg_event_id, event_name, venue_name, event_date
 }) {
-  const handleClick = () => updateSearch({ event: event_name, venue: venue_name });
 
+  const { activeEventId } = useContext(EventContext);
+
+  const date = (d) => dateformat(new Date(parseInt(d)), 'ddd mmm d, yyyy h:MM TT');
+
+  const handleClick = () => updateSearch({ event: event_name, venue: venue_name });
   return (
-    <ListItem button key={bg_event_id} onClick={handleClick}>
-      <ListItemText primary={event_name} secondary={`${venue_name} || ${new Date(parseInt(event_date))}`} />
+    <ListItem selected={activeEventId === bg_event_id} button key={bg_event_id} onClick={() => setSelected(bg_event_id)}>
+      <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />
     </ListItem>
   );
 }
