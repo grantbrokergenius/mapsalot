@@ -21,7 +21,7 @@ const queries = {
       limit, offset, order, event_name, venue_name,
     }) => findEvents({
       start: offset, rows: limit, venue: venue_name, name: event_name, sort: order,
-    }).then((res) => res.json()),
+    }),
   },
 };
 

@@ -12,6 +12,7 @@ const searchUrl = process.env.STUBHUB_SEARCH_URL;
 const loginUrl = process.env.STUBHUB_LOGIN_URL;
 
 const qs = (params) => Object.keys(params)
+  .filter((k) => typeof params[k] !== 'undefined')
   .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
   .join('&');
 
