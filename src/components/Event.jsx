@@ -14,7 +14,7 @@ export default function Event({
 
   const handleClick = () => updateSearch({ event: event_name, venue: venue_name });
   return (
-    <ListItem selected={activeEventId === bg_event_id} button key={bg_event_id} onClick={() => setSelected(bg_event_id)}>
+    <ListItem selected={activeEventId === bg_event_id} button key={bg_event_id} onClick={() => {setSelected(bg_event_id)}}>
       <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />
     </ListItem>
   );

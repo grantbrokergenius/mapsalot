@@ -29,7 +29,7 @@ function App() {
 
   const [updateSearchEnabled, setToggleUpdateSearch] = useState(true);
 
-  const updateSearch = (override) => (...args) => (updateSearchEnabled || override) && setStubHubSearch(...args);
+  const updateSearch = (override) => (...args) => (updateSearchEnabled || override) && setStubHubSearch(args);
 
   const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
 
