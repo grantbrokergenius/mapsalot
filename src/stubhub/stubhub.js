@@ -73,7 +73,10 @@ const keys = new KeyStore();
 const transform = ({
   id, name, eventDateLocal, venue,
 }) => ({
-  stubhub_event_id: id, event_date: eventDateLocal, event_name: name, venue_name: `${venue.name}, ${venue.city}, ${venue.state}`,
+  stubhub_event_id: id,
+  event_date: Date.parse(eventDateLocal),
+  event_name: name,
+  venue_name: `${venue.name}, ${venue.city}, ${venue.state}`,
 });
 
 const findEvents = async (fields) => fetch(`${searchUrl}?${qs(fields)}`, {

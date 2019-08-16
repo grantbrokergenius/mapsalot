@@ -26,6 +26,7 @@ function App() {
   });
 
   const [activeEventId, setActiveEventId] = useState(null);
+  const [activeStubHubEventId, setActiveStubHubEventId] = useState(null);
 
   const [updateSearchEnabled, setToggleUpdateSearch] = useState(true);
 
@@ -34,8 +35,10 @@ function App() {
   const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
 
   const context = {
+    activeStubHubEventId,
     activeEventId,
     setActiveEventId,
+    setActiveStubHubEventId,
     stubhubSearchEvent: stubHubSearch.event,
     stubhubSearchVenue: stubHubSearch.venue,
     toggleUpdateSearchEnabled,

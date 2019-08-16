@@ -9,25 +9,11 @@ import {
 import { Typography, CircularProgress } from '@material-ui/core';
 import Event from './Event';
 import EventContext from '../context/EventContext';
+import Error from './Error';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bg_event_id, event_name, venue_name, event_date } }';
 
 const MAP_QUERY = 'mutation Map(id: String!, stubhub: Int!) { mapEvent(id: $id, stubhub: $stubhub) { ok } }';
-
-
-function Error() {
-  return (
-    <>
-      <Typography>Something went wrong</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-      >
-Retry
-      </Button>
-    </>
-  );
-}
 
 export default function Uptick() {
   const PER_PAGE = 100;

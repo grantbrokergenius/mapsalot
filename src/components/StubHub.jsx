@@ -3,18 +3,16 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import { useQuery } from 'graphql-hooks';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import EventContext from '../context/EventContext';
+import Error from './Error';
+import StubHubEvent from './StubHubEvent';
 
 const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String, $venue_name: String) {
    findStubHubEvents(offset: $offset, event_name: $event_name, venue_name: $venue_name){
       stubhub_event_id, event_name, venue_name, event_date
     }
   }`;
-
-
-function StubhubEvent({ }) {
-  return (<li>Hi</li>);
-}
 
 export default function Stubhub() {
   const {
@@ -26,7 +24,7 @@ export default function Stubhub() {
     updateSearch(true, vals);
   };
 
-  //  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables: { offset: 0, event_name: event, venue_name: venue } });
+  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables: { offset: 0, event_name: stubhubSearchEvent, venue_name: stubhubSearchVenue } });
 
 
   return (
@@ -49,6 +47,14 @@ export default function Stubhub() {
         onChange={handleChange('venue')}
         margin="normal"
       />
+      <div
+        style={{ flexFlow: '1 0 auto', overflow: 'auto' }}
+      >
+        {loading && <CircularProgress />}
+        {error && <Error />}
+        {data && data.findStubHubEvents && data.findStubHubEvents.map((event) => (<StubHubEvent key={event.stubhub_event_id} {...event} />
+        ))}
+      </div>
     </>
   );
 }
