@@ -29,7 +29,7 @@ function App() {
 
   const [updateSearchEnabled, setToggleUpdateSearch] = useState(true);
 
-  const updateSearch = (override) => (...args) => (updateSearchEnabled || override) && setStubHubSearch(args);
+  const updateSearch = (override, args) => (updateSearchEnabled || override) && setStubHubSearch(args);
 
   const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
 
@@ -40,7 +40,7 @@ function App() {
     stubhubSearchVenue: stubHubSearch.venue,
     toggleUpdateSearchEnabled,
     updateSearchEnabled,
-    updateSearch
+    updateSearch,
   };
 
   return (
@@ -55,13 +55,13 @@ function App() {
       <Grid container style={{ height: 'calc(100% - 114px)' }}>
         <Grid item style={{ height: '100%', width: '50%' }}>
           <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
-            <Uptick/>
+            <Uptick />
           </Paper>
         </Grid>
 
         <Grid item style={{ height: '100%', width: '50%' }}>
           <Paper className="stubhub">
-            <Stubhub {...stubHubSearch} />
+            <Stubhub />
           </Paper>
         </Grid>
       </Grid>
@@ -87,4 +87,4 @@ const theme = createMuiTheme({
 
 ReactDOM.render(<ClientContext.Provider value={client}>
   <MuiThemeProvider theme={theme}><App /></MuiThemeProvider>
-</ClientContext.Provider>, document.getElementById('app'));
+                </ClientContext.Provider>, document.getElementById('app'));

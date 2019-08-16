@@ -52,7 +52,7 @@ export default function Uptick() {
 
   const setSelected = (id, event, venue) => {
     setActiveEventId(id);
-    updateSearch(false)(event, venue);
+    updateSearch(false, { event, venue });
   };
 
   return (

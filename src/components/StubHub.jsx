@@ -16,21 +16,14 @@ function StubhubEvent({ }) {
   return (<li>Hi</li>);
 }
 
-export default function Stubhub({
-  event, venue,
-}) {
-  const [values, setValues] = useState({
-    event,
-    venue,
-  });
-
-  const { updateSearchEnabled, toggleUpdateSearchEnabled, updateSearch } = useContext(EventContext);
-
+export default function Stubhub() {
+  const {
+    updateSearchEnabled, toggleUpdateSearchEnabled, updateSearch, stubhubSearchEvent, stubhubSearchVenue,
+  } = useContext(EventContext);
 
   const handleChange = (name) => (event) => {
-    const vals = { ...values, [name]: event.target.value };
-    updateSearch(true)(vals);
-    setValues(vals);
+    const vals = { event: stubhubSearchEvent, venue: stubhubSearchVenue, [name]: event.target.value };
+    updateSearch(true, vals);
   };
 
   //  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables: { offset: 0, event_name: event, venue_name: venue } });
@@ -46,13 +39,13 @@ export default function Stubhub({
       />
       <TextField
         label="Event Name"
-        value={values.event}
+        value={stubhubSearchEvent}
         onChange={handleChange('event')}
         margin="normal"
       />
       <TextField
         label="Venue"
-        value={values.venue}
+        value={stubhubSearchVenue}
         onChange={handleChange('venue')}
         margin="normal"
       />
