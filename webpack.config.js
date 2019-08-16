@@ -7,4 +7,5 @@ module.exports = {
     filename: 'client.js',
   },
   mode: 'development',
+  devtool: 'eval-source-map',
 };

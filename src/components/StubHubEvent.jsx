@@ -1,21 +1,32 @@
+/* eslint-disable camelcase */
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import dateformat from 'dateformat';
 import EventContext from '../context/EventContext';
+import date from '../utils/date';
 
-export default function StubHubEvent({
+function StubHubEvent({
   stubhub_event_id, event_name, venue_name, event_date,
 }) {
   const { activeStubHubEventId, setActiveStubHubEventId } = useContext(EventContext);
-  
-  const date = (d) => dateformat(new Date(parseInt(d)), 'ddd mmm d, yyyy h:MM TT');
 
-  const handleClick = () => setActiveStubHubEventId(stubhub_event_id); // setSelected(bg_event_id, event_name, venue_name);
+  const handleClick = () => setActiveStubHubEventId(stubhub_event_id);
+
+  const selected = activeStubHubEventId === stubhub_event_id;
 
   return (
-    <ListItem selected={activeStubHubEventId === stubhub_event_id} button key={stubhub_event_id} onClick={handleClick}>
+    <ListItem selected={selected} button key={stubhub_event_id} onClick={handleClick}>
       <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />
     </ListItem>
   );
 }
+
+StubHubEvent.propTypes = {
+  stubhub_event_id: PropTypes.number.isRequired,
+  event_name: PropTypes.string.isRequired,
+  venue_name: PropTypes.string.isRequired,
+  event_date: PropTypes.number.isRequired,
+};
+
+export default StubHubEvent;

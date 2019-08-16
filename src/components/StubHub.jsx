@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useContext } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
@@ -16,15 +17,25 @@ const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String,
 
 export default function Stubhub() {
   const {
-    updateSearchEnabled, toggleUpdateSearchEnabled, updateSearch, stubhubSearchEvent, stubhubSearchVenue,
+    updateSearchEnabled,
+    toggleUpdateSearchEnabled,
+    updateSearch,
+    stubhubSearchEvent,
+    stubhubSearchVenue,
   } = useContext(EventContext);
 
   const handleChange = (name) => (event) => {
-    const vals = { event: stubhubSearchEvent, venue: stubhubSearchVenue, [name]: event.target.value };
+    const vals = {
+      event: stubhubSearchEvent,
+      venue: stubhubSearchVenue,
+      [name]: event.target.value,
+    };
     updateSearch(true, vals);
   };
 
-  const { loading, error, data } = useQuery(SEARCH_QUERY, { variables: { offset: 0, event_name: stubhubSearchEvent, venue_name: stubhubSearchVenue } });
+  const { loading, error, data } = useQuery(SEARCH_QUERY, {
+    variables: { offset: 0, event_name: stubhubSearchEvent, venue_name: stubhubSearchVenue },
+  });
 
 
   return (
@@ -52,8 +63,9 @@ export default function Stubhub() {
       >
         {loading && <CircularProgress />}
         {error && <Error />}
-        {data && data.findStubHubEvents && data.findStubHubEvents.map((event) => (<StubHubEvent key={event.stubhub_event_id} {...event} />
-        ))}
+        {data && data.findStubHubEvents && data.findStubHubEvents.map(
+          (event) => (<StubHubEvent key={event.stubhub_event_id} {...event} />),
+        )}
       </div>
     </>
   );
