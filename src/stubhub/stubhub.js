@@ -37,14 +37,6 @@ const login = ({ user, password }) => {
   })
     .then((response) => response.json())
     .then((json) => json.access_token);
-  /*
-    .then((response) => {
-      if (response.access_token) {
-        api.accesskey = response.access_token;
-        api.refreshkey = response.refresh_token;
-        // success
-      }
-    }); */
 };
 
 class KeyStore {

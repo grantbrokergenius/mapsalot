@@ -33,12 +33,18 @@ function App() {
 
   const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
 
+  const context = {
+    activeEventId,
+    setActiveEventId,
+    stubhubSearchEvent: stubHubSearch.event,
+    stubhubSearchVenue: stubHubSearch.venue,
+    toggleUpdateSearchEnabled,
+    updateSearchEnabled,
+    updateSearch
+  };
+
   return (
-    <EventContext.Provider value={{
-       activeEventId,
-       setActiveEventId,
-       stubhubSearchEvent: stubHubSearch.event,
-      stubhubSearchVenue: stubHubSearch.venue, toggleUpdateSearchEnabled, updateSearchEnabled, updateSearch }}>
+    <EventContext.Provider value={context}>
       <CssBaseline />
       <AppBar position="relative" color="primary">
         <Toolbar>
@@ -55,7 +61,7 @@ function App() {
 
         <Grid item style={{ height: '100%', width: '50%' }}>
           <Paper className="stubhub">
-            <Stubhub {...stubHubSearch} updateSearch={updateSearch(true)} toggleUpdateSearchEnabled={toggleUpdateSearchEnabled} updateSearchEnabled={updateSearchEnabled} />
+            <Stubhub {...stubHubSearch} />
           </Paper>
         </Grid>
       </Grid>

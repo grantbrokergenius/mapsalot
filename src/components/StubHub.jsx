@@ -17,19 +17,19 @@ function StubhubEvent({ }) {
 }
 
 export default function Stubhub({
-  event, venue, updateSearchEnabled, toggleUpdateSearchEnabled, updateSearch,
+  event, venue,
 }) {
   const [values, setValues] = useState({
     event,
     venue,
   });
 
-  const { activeEventId } = useContext(EventContext);
+  const { updateSearchEnabled, toggleUpdateSearchEnabled, updateSearch } = useContext(EventContext);
 
 
   const handleChange = (name) => (event) => {
     const vals = { ...values, [name]: event.target.value };
-    updateSearch(vals);
+    updateSearch(true)(vals);
     setValues(vals);
   };
 
