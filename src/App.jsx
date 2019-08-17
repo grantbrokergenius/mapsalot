@@ -13,6 +13,7 @@ import { createMuiTheme, withTheme } from '@material-ui/core/styles';
 import Stubhub from './components/StubHub';
 import Uptick from './components/Uptick';
 import EventContext from './context/EventContext';
+import MapConfirm from './components/MapConfirm';
 
 
 const client = new GraphQLClient({
@@ -27,12 +28,17 @@ function App() {
 
   const [activeEventId, setActiveEventId] = useState(null);
   const [activeStubHubEventId, setActiveStubHubEventId] = useState(null);
+  const [mapDialogOpen, setMapDialogOpen] = useState(false);
+
 
   const [updateSearchEnabled, setToggleUpdateSearch] = useState(true);
 
-  const updateSearch = (override, args) => (updateSearchEnabled || override) && setStubHubSearch(args);
+  const updateSearch = (override, args) => (updateSearchEnabled || override)
+    && setStubHubSearch(args);
 
   const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
+  const toggleMapDialogOpen = () => setMapDialogOpen(!mapDialogOpen);
+
 
   const context = {
     activeStubHubEventId,
@@ -44,6 +50,8 @@ function App() {
     toggleUpdateSearchEnabled,
     updateSearchEnabled,
     updateSearch,
+    mapDialogOpen,
+    toggleMapDialogOpen,
   };
 
   return (
@@ -54,6 +62,8 @@ function App() {
           <img alt="mapsalot" src="Spamalot.jpg" />
         </Toolbar>
       </AppBar>
+
+      <MapConfirm />
 
       <Grid container style={{ height: 'calc(100% - 114px)' }}>
         <Grid item style={{ height: '100%', width: '50%' }}>
@@ -88,6 +98,8 @@ const theme = createMuiTheme({
 });
 
 
-ReactDOM.render(<ClientContext.Provider value={client}>
-  <MuiThemeProvider theme={theme}><App /></MuiThemeProvider>
-                </ClientContext.Provider>, document.getElementById('app'));
+ReactDOM.render(
+  <ClientContext.Provider value={client}>
+    <MuiThemeProvider theme={theme}><App /></MuiThemeProvider>
+  </ClientContext.Provider>, document.getElementById('app')
+);

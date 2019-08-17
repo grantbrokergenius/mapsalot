@@ -14,7 +14,12 @@ const openLink = (id) => window.open(`https://stubhub.com/event/${id}`, '_blank'
 function StubHubEvent({
   stubhub_event_id, event_name, venue_name, event_date,
 }) {
-  const { activeStubHubEventId, setActiveStubHubEventId, activeEventId } = useContext(EventContext);
+  const {
+    activeStubHubEventId,
+    setActiveStubHubEventId,
+    activeEventId,
+    toggleMapDialogOpen,
+  } = useContext(EventContext);
 
   const handleClick = () => setActiveStubHubEventId(stubhub_event_id);
 
@@ -26,7 +31,7 @@ function StubHubEvent({
       <ListItemSecondaryAction>
         {activeEventId
         && (
-        <IconButton aria-label="map">
+        <IconButton aria-label="map" onClick={toggleMapDialogOpen}>
           <DoneOutlineIcon />
         </IconButton>
         )}
@@ -43,7 +48,7 @@ StubHubEvent.propTypes = {
   stubhub_event_id: PropTypes.number.isRequired,
   event_name: PropTypes.string.isRequired,
   venue_name: PropTypes.string.isRequired,
-  event_date: PropTypes.number.isRequired,
+  event_date: PropTypes.string.isRequired,
 };
 
 export default StubHubEvent;
