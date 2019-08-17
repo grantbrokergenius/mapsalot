@@ -9,7 +9,7 @@ import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import EventContext from '../context/EventContext';
 import date from '../utils/date';
 
-const openLink = (id) => window.open(`https://stubhub.com/event/${id}`, '_blank')
+const openLink = (id) => window.open(`https://stubhub.com/event/${id}`, '_blank');
 
 function StubHubEvent({
   stubhub_event_id, event_name, venue_name, event_date,
