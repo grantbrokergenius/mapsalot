@@ -1,3 +1,5 @@
+import qs from '../utils/qs';
+
 // https://brokergenius.atlassian.net/wiki/spaces/BF/pages/65817627/Stubhub+API+Documentation?preview=/65817627/65817743/API%20Reference%20-%20Event.pdf
 const fetch = require('node-fetch');
 
@@ -10,12 +12,6 @@ curl 'https://www.stubhub.com/bfx/api/search/suggest/v3?term=knicks&sort=popular
 
 const searchUrl = process.env.STUBHUB_SEARCH_URL;
 const loginUrl = process.env.STUBHUB_LOGIN_URL;
-
-const qs = (params) => Object.keys(params)
-  .filter((k) => typeof params[k] !== 'undefined')
-  .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-  .join('&');
-
 
 const login = ({ user, password }) => {
   const atob = (str) => Buffer.from(str, 'binary').toString('base64');

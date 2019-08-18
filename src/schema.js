@@ -6,6 +6,7 @@ import {
 
 import events from './events/schema';
 import stubhub from './stubhub/schema';
+import user from './user/schema';
 
 export default new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -13,6 +14,7 @@ export default new GraphQLSchema({
     fields: {
       ...events.queries,
       ...stubhub.queries,
+      ...user.queries,
       hi: {
         type: GraphQLString,
         args: {
