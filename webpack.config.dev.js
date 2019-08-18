@@ -6,6 +6,6 @@ module.exports = {
     path: path.resolve(__dirname, 'static/app'),
     filename: 'client.js',
   },
-  mode: 'production',
-//  devtool: 'eval-source-map',
+  mode: 'development',
+  devtool: 'eval-source-map',
 };
