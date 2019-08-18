@@ -6,7 +6,10 @@ import {
   useQuery, useManualQuery,
 } from 'graphql-hooks';
 
-import { Typography, CircularProgress } from '@material-ui/core';
+import {
+  Typography, CircularProgress, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails,
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Event from './Event';
 import EventContext from '../context/EventContext';
 import Error from './Error';
@@ -24,7 +27,7 @@ export default function Uptick() {
     venue_name: '',
   });
 
-  const { setActiveEventId, activeEventId } = useContext(EventContext);
+  const { setActiveEvent } = useContext(EventContext);
   const { updateSearch } = useContext(EventContext);
 
   const { loading, error, data } = useQuery(LIST_QUERY, { variables: { offset } });
@@ -36,20 +39,36 @@ export default function Uptick() {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const setSelected = (id, event, venue) => {
-    setActiveEventId(id);
-    updateSearch(false, { event, venue });
+  const setSelected = (event) => {
+    setActiveEvent(event);
+    updateSearch(false, { event: event.event_name, venue: event.venue_name });
   };
 
   return (
     <>
-      <TextField
-        style={{ flexFlow: '0 1 auto' }}
-        label="Event Name"
-        value={values.event_name}
-        onChange={handleChange('event_name')}
-        margin="normal"
-      />
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography>Expansion Panel 1</Typography>
+          <TextField
+            style={{ flexFlow: '0 1 auto' }}
+            label="Event Name"
+            value={values.event_name}
+            onChange={handleChange('event_name')}
+            margin="normal"
+          />
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Typography>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+        sit amet blandit leo lobortis eget.
+          </Typography>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+
       <TextField
         style={{ flexFlow: '0 1 auto' }}
         label="Venue"

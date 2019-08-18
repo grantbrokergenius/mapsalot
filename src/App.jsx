@@ -26,8 +26,8 @@ function App() {
     venue: '',
   });
 
-  const [activeEventId, setActiveEventId] = useState(null);
-  const [activeStubHubEventId, setActiveStubHubEventId] = useState(null);
+  const [activeEvent, setActiveEvent] = useState(null);
+  const [activeStubHubEvent, setActiveStubHubEvent] = useState(null);
   const [mapDialogOpen, setMapDialogOpen] = useState(false);
 
 
@@ -41,10 +41,10 @@ function App() {
 
 
   const context = {
-    activeStubHubEventId,
-    activeEventId,
-    setActiveEventId,
-    setActiveStubHubEventId,
+    activeEvent,
+    activeStubHubEvent,
+    setActiveEvent,
+    setActiveStubHubEvent,
     stubhubSearchEvent: stubHubSearch.event,
     stubhubSearchVenue: stubHubSearch.venue,
     toggleUpdateSearchEnabled,

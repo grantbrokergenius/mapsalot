@@ -17,24 +17,27 @@ function StubHubEvent({
   stubhub_event_id, event_name, venue_name, event_date,
 }) {
   const {
-    activeStubHubEventId,
-    setActiveStubHubEventId,
-    activeEventId,
+    activeStubHubEvent,
+    activeEvent,
     toggleMapDialogOpen,
+    setActiveStubHubEvent,
   } = useContext(EventContext);
 
-  const handleClick = () => setActiveStubHubEventId(stubhub_event_id);
 
-  const selected = activeStubHubEventId === stubhub_event_id;
+  const handleClick = () => setActiveStubHubEvent({
+    stubhub_event_id, event_name, venue_name, event_date,
+  });
+
+  const selected = activeStubHubEvent && activeStubHubEvent.stubhub_event_id === stubhub_event_id;
 
   return (
     <ListItem selected={selected} button key={stubhub_event_id} onClick={handleClick}>
       <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />
       <ListItemSecondaryAction>
-        {activeEventId
+        {activeEvent
         && (
           <Tooltip title="Map event">
-            <IconButton aria-label="map" onClick={toggleMapDialogOpen}>
+            <IconButton aria-label="map" onClick={() => { handleClick(); toggleMapDialogOpen(); }}>
               <DoneOutlineIcon />
             </IconButton>
           </Tooltip>

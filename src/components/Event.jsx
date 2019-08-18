@@ -40,10 +40,12 @@ function Event({
   setSelected, bg_event_id, event_name, venue_name, event_date,
 }) {
   const classes = useStyles();
-  const { activeEventId } = useContext(EventContext);
+  const { activeEvent } = useContext(EventContext);
 
-  const handleClick = () => setSelected(bg_event_id, event_name, venue_name);
-  const selected = activeEventId === bg_event_id;
+  const handleClick = () => setSelected({
+    bg_event_id, event_name, venue_name, event_date,
+  });
+  const selected = activeEvent && activeEvent.bg_event_id === bg_event_id;
   return (
     <ListItem selected={selected} classes={classes} button key={bg_event_id} onClick={handleClick}>
       <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />

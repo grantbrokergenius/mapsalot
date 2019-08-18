@@ -16,9 +16,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
   },
   error: {
-    color: 'white',
-    backgroundColor: 'rgba(255,0,0,0.25)',
-    borderRadius: '4px',
+  },
+  errorIcon: {
+    color: 'red',
   },
   input: {
     background: 'rgba(255,255,255,0.16)',
@@ -45,15 +45,6 @@ const useStyles = makeStyles((theme) => ({
       opacity: 1,
       color: '#ffffff',
     },
-  },
-  checkbox: {
-    color: 'rgba(255,255,255,0.87)',
-  },
-  checkboxLabel: {
-    color: 'rgba(255,255,255,0.87)',
-  },
-  grey: {
-    color: '#c5c5c5',
   },
 }));
 
@@ -125,14 +116,14 @@ export default function Login() {
             }}
           />
           <Grid container spacing={5} alignContent="center">
-            <Grid item xs={1}>
-              <Button type="submit">Log in</Button>
+            <Grid item>
+              <Button type="submit" size="large">Log in</Button>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item>
               {loginFailed && (
               <div className={classes.error}>
-                <Typography noWrap>
-                  <ErrorOutlineIcon />
+                <Typography>
+                  <ErrorOutlineIcon className={classes.errorIcon} />
 Login failed
                 </Typography>
               </div>

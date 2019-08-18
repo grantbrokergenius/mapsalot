@@ -1,9 +1,10 @@
 import React from 'react';
 
 export default React.createContext({
-  activeEventId: null,
-  activeStubHubEventId: null,
-  setActiveEventId: () => {},
+  activeEvent: null,
+  activeStubHubEvent: null,
+  setActiveEvent: () => {},
+  setActiveStubHubEvent: () => {},
   stubhubSearchEvent: '',
   stubhubSearchVenue: '',
   updateSearchEnabled: true,
