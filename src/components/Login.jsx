@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react';
-import {
-  Grid, makeStyles, TextField, Button, Typography,
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import AuthContext from '../context/AuthContext';
 
@@ -122,11 +124,11 @@ export default function Login() {
               },
             }}
           />
-          <Grid container spacing={5}>
+          <Grid container spacing={5} alignContent="center">
             <Grid item xs={1}>
               <Button type="submit">Log in</Button>
             </Grid>
-            <Grid item xs={3} alignContent="center">
+            <Grid item xs={3}>
               {loginFailed && (
               <div className={classes.error}>
                 <Typography noWrap>

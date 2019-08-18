@@ -1,11 +1,16 @@
 /* eslint-disable camelcase */
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import PropTypes from 'prop-types';
 import EventContext from '../context/EventContext';
 import date from '../utils/date';
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -20,14 +25,14 @@ const useStyles = makeStyles((theme) => ({
       },
       '&:focus': {
         backgroundColor: 'rgb(171, 27, 125)',
-      }
+      },
     },
     '&:focus': {
       backgroundColor: 'rgb(171, 27, 125)',
-    }
+    },
   },
   selected: {
-    
+
   },
 }));
 
@@ -42,6 +47,16 @@ function Event({
   return (
     <ListItem selected={selected} classes={classes} button key={bg_event_id} onClick={handleClick}>
       <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />
+      {selected
+      && (
+      <ListItemSecondaryAction>
+        <Tooltip title="Mark as unresolveable">
+          <IconButton aria-label="unresolveable">
+            <DeleteForeverIcon />
+          </IconButton>
+        </Tooltip>
+      </ListItemSecondaryAction>
+      )}
     </ListItem>
   );
 }

@@ -3,7 +3,9 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { ListItemSecondaryAction, IconButton } from '@material-ui/core';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import LaunchIcon from '@material-ui/icons/Launch';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import EventContext from '../context/EventContext';
@@ -31,14 +33,17 @@ function StubHubEvent({
       <ListItemSecondaryAction>
         {activeEventId
         && (
-        <IconButton aria-label="map" onClick={toggleMapDialogOpen}>
-          <DoneOutlineIcon />
-        </IconButton>
+          <Tooltip title="Map event">
+            <IconButton aria-label="map" onClick={toggleMapDialogOpen}>
+              <DoneOutlineIcon />
+            </IconButton>
+          </Tooltip>
         )}
-
-        <IconButton aria-label="open stubhub" onClick={() => openLink(stubhub_event_id)}>
-          <LaunchIcon />
-        </IconButton>
+        <Tooltip title="View on StubHub">
+          <IconButton aria-label="open stubhub" onClick={() => openLink(stubhub_event_id)}>
+            <LaunchIcon />
+          </IconButton>
+        </Tooltip>
       </ListItemSecondaryAction>
     </ListItem>
   );

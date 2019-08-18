@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import {
-  GraphQLClient, ClientContext,
-} from 'graphql-hooks';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import { createMuiTheme } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { ClientContext, GraphQLClient } from 'graphql-hooks';
+import Auth from './components/Auth';
+import Authorized from './components/Authorized';
+import Header from './components/Header';
+import Login from './components/Login';
+import MapConfirm from './components/MapConfirm';
 import Stubhub from './components/StubHub';
 import Uptick from './components/Uptick';
 import EventContext from './context/EventContext';
-import MapConfirm from './components/MapConfirm';
-import Auth from './components/Auth';
-import Authorized from './components/Authorized';
-import Login from './components/Login';
 
 
 const client = new GraphQLClient({
   url: '/graphql',
 });
+
 
 function App() {
   const [stubHubSearch, setStubHubSearch] = useState({
@@ -65,11 +62,8 @@ function App() {
       <Authorized>
         <EventContext.Provider value={context}>
           <CssBaseline />
-          <AppBar position="relative" color="primary">
-            <Toolbar>
-              <img alt="mapsalot" src="Spamalot.jpg" />
-            </Toolbar>
-          </AppBar>
+
+          <Header />
 
           <MapConfirm />
 
