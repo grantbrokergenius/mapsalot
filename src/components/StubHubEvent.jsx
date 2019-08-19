@@ -14,27 +14,24 @@ import date from '../utils/date';
 const openLink = (id) => window.open(`https://stubhub.com/event/${id}`, '_blank');
 
 function StubHubEvent({
+  getActiveStubHubEventId,
+  hasActiveEvent,
+  toggleMapDialogOpen,
+  setActiveStubHubEvent,
   stubhub_event_id, event_name, venue_name, event_date,
 }) {
-  const {
-    activeStubHubEvent,
-    activeEvent,
-    toggleMapDialogOpen,
-    setActiveStubHubEvent,
-  } = useContext(EventContext);
-
 
   const handleClick = () => setActiveStubHubEvent({
     stubhub_event_id, event_name, venue_name, event_date,
   });
 
-  const selected = activeStubHubEvent && activeStubHubEvent.stubhub_event_id === stubhub_event_id;
+  const selected = getActiveStubHubEventId() === stubhub_event_id;
 
   return (
     <ListItem selected={selected} button key={stubhub_event_id} onClick={handleClick}>
       <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />
       <ListItemSecondaryAction>
-        {activeEvent
+        {hasActiveEvent()
         && (
           <Tooltip title="Map event">
             <IconButton aria-label="map" onClick={() => { handleClick(); toggleMapDialogOpen(); }}>
@@ -53,6 +50,10 @@ function StubHubEvent({
 }
 
 StubHubEvent.propTypes = {
+  getActiveStubHubEventId: PropTypes.func.isRequired,
+  hasActiveEvent: PropTypes.func.isRequired,
+  toggleMapDialogOpen: PropTypes.func.isRequired,
+  setActiveStubHubEvent: PropTypes.func.isRequired,
   stubhub_event_id: PropTypes.number.isRequired,
   event_name: PropTypes.string.isRequired,
   venue_name: PropTypes.string.isRequired,

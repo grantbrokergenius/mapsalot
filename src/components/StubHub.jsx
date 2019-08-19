@@ -17,6 +17,11 @@ const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String,
 
 export default function Stubhub() {
   const {
+    hasActiveEvent,
+    activeStubHubEvent,
+    toggleMapDialogOpen,
+    setActiveStubHubEvent,
+    getActiveStubHubEventId,
     updateSearchEnabled,
     toggleUpdateSearchEnabled,
     updateSearch,
@@ -64,7 +69,17 @@ export default function Stubhub() {
         {loading && <CircularProgress />}
         {error && <Error />}
         {data && data.findStubHubEvents && data.findStubHubEvents.map(
-          (event) => (<StubHubEvent key={event.stubhub_event_id} {...event} />),
+          (event) => (
+            <StubHubEvent
+              getActiveStubHubEventId={getActiveStubHubEventId}
+              hasActiveEvent={hasActiveEvent}
+              activeStubHubEvent={activeStubHubEvent}
+              toggleMapDialogOpen={toggleMapDialogOpen}
+              setActiveStubHubEvent={setActiveStubHubEvent}
+              key={event.stubhub_event_id}
+              {...event}
+            />
+          ),
         )}
       </div>
     </>

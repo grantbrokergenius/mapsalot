@@ -27,8 +27,8 @@ export default function Uptick() {
     venue_name: '',
   });
 
-  const { setActiveEvent } = useContext(EventContext);
-  const { updateSearch } = useContext(EventContext);
+  const { setActiveEvent, activeEvent, updateSearch } = useContext(EventContext);
+  const activeEventId = activeEvent && activeEvent.bg_event_id;
 
   const { loading, error, data } = useQuery(LIST_QUERY, { variables: { offset } });
 
@@ -81,7 +81,7 @@ export default function Uptick() {
       >
         {loading && <CircularProgress />}
         {error && <Error />}
-        {data && data.list && data.list.map((event) => (<Event key={event.bg_event_id} setSelected={setSelected} {...event} />
+        {data && data.list && data.list.map((event) => (<Event key={event.bg_event_id} activeEventId={activeEventId} setSelected={setSelected} {...event} />
         ))}
       </div>
       <div style={{ flexFlow: '0 1 140px' }}>

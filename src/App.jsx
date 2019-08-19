@@ -39,12 +39,19 @@ function App() {
   const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
   const toggleMapDialogOpen = () => setMapDialogOpen(!mapDialogOpen);
 
+  const hasActiveEvent = () => !!activeEvent;
+  const getActiveEventId = () => activeEvent && activeEvent.bg_event_id;
+  const getActiveStubHubEventId = () => activeStubHubEvent && activeStubHubEvent.stubhub_event_id;
+
 
   const context = {
     activeEvent,
     activeStubHubEvent,
     setActiveEvent,
+    hasActiveEvent,
+    getActiveEventId,
     setActiveStubHubEvent,
+    getActiveStubHubEventId,
     stubhubSearchEvent: stubHubSearch.event,
     stubhubSearchVenue: stubHubSearch.venue,
     toggleUpdateSearchEnabled,
@@ -65,7 +72,15 @@ function App() {
 
           <Header />
 
-          <MapConfirm toggleMapDialogOpen={toggleMapDialogOpen} mapDialogOpen={mapDialogOpen} activeEvent={activeEvent} activeStubHubEvent={activeStubHubEvent} />
+          {activeEvent && activeStubHubEvent
+          && (
+          <MapConfirm
+            toggleMapDialogOpen={toggleMapDialogOpen}
+            mapDialogOpen={mapDialogOpen}
+            activeEvent={activeEvent}
+            activeStubHubEvent={activeStubHubEvent}
+          />
+          )}
 
 
           <Grid container style={{ height: 'calc(100% - 114px)' }}>
