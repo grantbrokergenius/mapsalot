@@ -65,7 +65,8 @@ function App() {
 
           <Header />
 
-          <MapConfirm />
+          <MapConfirm toggleMapDialogOpen={toggleMapDialogOpen} mapDialogOpen={mapDialogOpen} activeEvent={activeEvent} activeStubHubEvent={activeStubHubEvent} />
+
 
           <Grid container style={{ height: 'calc(100% - 114px)' }}>
             <Grid item style={{ height: '100%', width: '50%' }}>
