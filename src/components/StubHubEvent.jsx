@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -8,7 +8,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import LaunchIcon from '@material-ui/icons/Launch';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
-import EventContext from '../context/EventContext';
 import date from '../utils/date';
 
 const openLink = (id) => window.open(`https://stubhub.com/event/${id}`, '_blank');
@@ -20,7 +19,6 @@ function StubHubEvent({
   setActiveStubHubEvent,
   stubhub_event_id, event_name, venue_name, event_date,
 }) {
-
   const handleClick = () => setActiveStubHubEvent({
     stubhub_event_id, event_name, venue_name, event_date,
   });

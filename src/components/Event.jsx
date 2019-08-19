@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import date from '../utils/date';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 
   root: {
     '&:hover': {
