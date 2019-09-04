@@ -10,10 +10,18 @@ import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import { Grid, Typography } from '@material-ui/core';
 import date from '../utils/date';
 
-function MapConfirm(props) {
-  const {
-    toggleMapDialogOpen, mapDialogOpen, activeEvent, activeStubHubEvent,
-  } = props;
+const MAP_EVENT_MUTATION = 'mutation Map(id: String!, stubhub: Int!) { mapEvent(id: $id, stubhub: $stubhub) { ok } }';
+
+function MapConfirm({
+  toggleMapDialogOpen, mapDialogOpen, activeEvent, activeStubHubEvent,
+}) {
+  const [mapEvent] = useMutation(MAP_EVENT_MUTATION);
+
+  const confirm = async () => {
+    await mapEvent({ variables: { id: activeEvent.bg_event_id, stubhub: activeStubHubEvent.stubhub_event_id }});
+    toggleMapDialogOpen();
+  }
+
   return (
     <Dialog
       open={mapDialogOpen}
