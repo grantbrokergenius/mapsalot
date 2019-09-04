@@ -62,20 +62,18 @@ export default function Uptick() {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <TextField
-            style={{ flexFlow: '0 1 auto' }}
+          <SearchInput
             label="Event Name"
             value={values.event_name}
             onChange={handleChangeEvent('event_name')}
-            margin="normal"
-          />
-          <TextField
-            style={{ flexFlow: '0 1 auto' }}
-            label="Event Name"
+            delay={1000}
+            />
+          <SearchInput
+            label="Venue Name"
             value={values.venue_name}
             onChange={handleChangeEvent('venue_name')}
-            margin="normal"
-          />
+            delay={1000}
+            />
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <KeyboardDatePicker
