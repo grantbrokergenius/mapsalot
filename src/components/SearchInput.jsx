@@ -10,7 +10,7 @@ function SearchInput({ onChange, label, value, delay }) {
 
   const handleChangeEvent = (e) => {
     setNewValue(e.target.value);
-    if (timer) { clearImmediate(timer); }
+    if (timer) { clearInterval(timer); }
     setTimer(setTimeout(() => onChange(e), delay));
   }
 
