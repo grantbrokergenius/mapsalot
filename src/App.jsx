@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { ClientContext, GraphQLClient } from 'graphql-hooks';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Auth from './components/Auth';
 import Authorized from './components/Authorized';
 import Header from './components/Header';
@@ -120,6 +122,10 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <ClientContext.Provider value={client}>
-    <MuiThemeProvider theme={theme}><App /></MuiThemeProvider>
+    <MuiThemeProvider theme={theme}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <App />
+      </MuiPickersUtilsProvider>
+    </MuiThemeProvider>
   </ClientContext.Provider>, document.getElementById('app'),
 );
