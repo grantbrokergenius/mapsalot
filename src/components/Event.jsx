@@ -1,14 +1,12 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Tooltip from '@material-ui/core/Tooltip';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PropTypes from 'prop-types';
 import date from '../utils/date';
+import MarkUnresolved from './MarkUnresolved';
 
 
 const useStyles = makeStyles(() => ({
@@ -50,11 +48,7 @@ function Event({
       {selected
       && (
       <ListItemSecondaryAction>
-        <Tooltip title="Mark as unresolveable">
-          <IconButton aria-label="unresolveable">
-            <DeleteForeverIcon />
-          </IconButton>
-        </Tooltip>
+        <MarkUnresolved bg_event_id={bg_event_id} />
       </ListItemSecondaryAction>
       )}
     </ListItem>

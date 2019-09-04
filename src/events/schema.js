@@ -41,6 +41,13 @@ const mutations = {
       stubhub_event_id: { type: GraphQLInt },
     },
   },
+  markUnresolved: {
+    type: GraphQLBoolean,
+    args: {
+      bg_event_id: { type: GraphQLInt },
+    },
+    resolve: async (v, { bg_event_id }) => Event.markUnresolved(bg_event_id),
+  },
 };
 
 export default { queries, mutations };
