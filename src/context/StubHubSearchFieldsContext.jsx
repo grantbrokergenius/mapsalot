@@ -31,10 +31,9 @@ const useStubHubSearchFields = () => {
 
   const toggleUpdateSearchEnabled = () => set('updateSearchEnabled')(!updateSearchEnabled);
 
-  const updateSearchInput = ({ event, venue }) => setContext({
+  const updateSearchInput = (data) => setContext({
     ...ctx,
-    searchEventInput: event,
-    searchVenueInput: venue,
+    ...data,
   });
 
   return {

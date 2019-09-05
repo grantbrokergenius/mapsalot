@@ -25,6 +25,7 @@ function StubhubSearchFields() {
     searchVenueInput,
     updateSearchEnabled,
     toggleUpdateSearchEnabled,
+    updateSearchInput,
     set,
     timer,
   } = useStubHubSearchFields();
@@ -42,8 +43,12 @@ function StubhubSearchFields() {
   };
 
   const handleChange = (name) => (value) => {
-    delayUpdate({ event: searchEventInput, venue: searchVenueInput, [name]: value }, 1000);
-    set(name)(value);
+
+    const data = { searchEventInput, searchVenueInput, [name]: value };
+    console.log(data);
+    delayUpdate({ event: data.searchEventInput, venue: data.searchVenueInput }, 1000);
+    updateSearchInput(data);
+    // set(name)(value);
     // if (timer) { clearInterval(timer); }
     // delayUpdate({ event: searchEventInput, venue: searchVenueInput, [name]: value }, 1000);
   };
