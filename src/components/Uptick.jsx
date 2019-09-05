@@ -16,6 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Event from './Event';
 import EventContext from '../context/EventContext';
 import Error from './Error';
+import SearchInput from './SearchInput';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bg_event_id, event_name, venue_name, event_date } }';
 
@@ -39,20 +40,21 @@ export default function Uptick() {
     variables: { offset },
   });
 
-  const { useMapQuery } = useManualQuery(MAP_QUERY);
+  // const { useMapQuery } = useManualQuery(MAP_QUERY);
 
   const handleChange = (name) => (value) => {
     setValues({ ...values, [name]: value });
   };
 
-  const handleChangeEvent = (name) => (event) => {
-    handleChange(name)(event.target.value);
+  const handleChangeEvent = (name) => (value) => {
+    handleChange(name)(value);
   };
 
   const setSelected = (event) => {
     setActiveEvent(event);
     updateSearch(false, { event: event.event_name, venue: event.venue_name });
   };
+
 
   return (
     <>
@@ -62,18 +64,20 @@ export default function Uptick() {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <SearchInput
+          {/* <SearchInput
             label="Event Name"
             value={values.event_name}
             onChange={handleChangeEvent('event_name')}
+            onChangeDelayed={handleChangeDelayed('event_name')}
             delay={1000}
             />
           <SearchInput
             label="Venue Name"
             value={values.venue_name}
             onChange={handleChangeEvent('venue_name')}
+            onChangeDelayed={handleChangeDelayed('venue_name')}
             delay={1000}
-            />
+          /> */}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <KeyboardDatePicker

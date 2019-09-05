@@ -2,34 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 
-function SearchInput({ onChange, label, value, delay }) {
-
-
-  const [newValue, setNewValue] = useState(value);
-
-  const [timer, setTimer] = useState(null);
-
+function SearchInput({
+  onChange, label, value,
+}) {
   const handleChangeEvent = (e) => {
-    setNewValue(e.target.value);
-    if (timer) { clearInterval(timer); }
-    setTimer(setTimeout(() => onChange(e), delay));
-  }
+    const val = e.target.value;
+    onChange(val);
+  };
 
-  return (<TextField
-            style={{ flexFlow: '0 1 auto' }}
-            label={label}
-            value={newValue}
-            onChange={handleChangeEvent}
-            margin="normal"
-          />)
-
+  return (
+    <TextField
+      style={{ flexFlow: '0 1 auto' }}
+      label={label}
+      value={value}
+      onChange={handleChangeEvent}
+      margin="normal"
+    />
+  );
 }
 
 SearchInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  delay: PropTypes.number.isRequired,
-}
+  value: PropTypes.string,
+};
+
+SearchInput.defaultProps = {
+  value: '',
+};
 
 export default SearchInput;

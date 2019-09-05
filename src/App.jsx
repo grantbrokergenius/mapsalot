@@ -15,6 +15,7 @@ import MapConfirm from './components/MapConfirm';
 import Stubhub from './components/StubHub';
 import Uptick from './components/Uptick';
 import EventContext from './context/EventContext';
+import { StubHubProvider } from './context/StubHubContext';
 
 
 const client = new GraphQLClient({
@@ -23,22 +24,10 @@ const client = new GraphQLClient({
 
 
 function App() {
-  const [stubHubSearch, setStubHubSearch] = useState({
-    event: '',
-    venue: '',
-  });
-
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeStubHubEvent, setActiveStubHubEvent] = useState(null);
   const [mapDialogOpen, setMapDialogOpen] = useState(false);
 
-
-  const [updateSearchEnabled, setToggleUpdateSearch] = useState(true);
-
-  const updateSearch = (override, args) => (updateSearchEnabled || override)
-    && setStubHubSearch(args);
-
-  const toggleUpdateSearchEnabled = () => setToggleUpdateSearch(!updateSearchEnabled);
   const toggleMapDialogOpen = () => setMapDialogOpen(!mapDialogOpen);
 
   const hasActiveEvent = () => !!activeEvent;
@@ -54,11 +43,6 @@ function App() {
     getActiveEventId,
     setActiveStubHubEvent,
     getActiveStubHubEventId,
-    stubhubSearchEvent: stubHubSearch.event,
-    stubhubSearchVenue: stubHubSearch.venue,
-    toggleUpdateSearchEnabled,
-    updateSearchEnabled,
-    updateSearch,
     mapDialogOpen,
     toggleMapDialogOpen,
   };
@@ -69,12 +53,13 @@ function App() {
         <Login />
       </Authorized>
       <Authorized>
-        <EventContext.Provider value={context}>
-          <CssBaseline />
+        <StubHubProvider>
+          <EventContext.Provider value={context}>
+            <CssBaseline />
 
-          <Header />
+            <Header />
 
-          {activeEvent && activeStubHubEvent
+            {activeEvent && activeStubHubEvent
           && (
           <MapConfirm
             toggleMapDialogOpen={toggleMapDialogOpen}
@@ -85,20 +70,21 @@ function App() {
           )}
 
 
-          <Grid container style={{ height: 'calc(100% - 114px)' }}>
-            <Grid item style={{ height: '100%', width: '50%' }}>
-              <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
-                <Uptick />
-              </Paper>
-            </Grid>
+            <Grid container style={{ height: 'calc(100% - 114px)' }}>
+              <Grid item style={{ height: '100%', width: '50%' }}>
+                <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
+                  <Uptick />
+                </Paper>
+              </Grid>
 
-            <Grid item style={{ height: '100%', width: '50%' }}>
-              <Paper className="stubhub">
-                <Stubhub />
-              </Paper>
+              <Grid item style={{ height: '100%', width: '50%' }}>
+                <Paper className="stubhub">
+                  <Stubhub />
+                </Paper>
+              </Grid>
             </Grid>
-          </Grid>
-        </EventContext.Provider>
+          </EventContext.Provider>
+        </StubHubProvider>
       </Authorized>
     </Auth>
   );

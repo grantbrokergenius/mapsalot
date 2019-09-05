@@ -8,6 +8,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import EventContext from '../context/EventContext';
 import Error from './Error';
 import StubHubEvent from './StubHubEvent';
+import SearchInput from './SearchInput';
+import { useStubHub } from '../context/StubHubContext';
+
 
 const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String, $venue_name: String) {
    findStubHubEvents(offset: $offset, event_name: $event_name, venue_name: $venue_name){
@@ -19,27 +22,26 @@ export default function Stubhub() {
   const {
     hasActiveEvent,
     activeStubHubEvent,
-    toggleMapDialogOpen,
     setActiveStubHubEvent,
     getActiveStubHubEventId,
-    updateSearchEnabled,
-    toggleUpdateSearchEnabled,
-    updateSearch,
-    stubhubSearchEvent,
-    stubhubSearchVenue,
+    toggleMapDialogOpen,
   } = useContext(EventContext);
 
-  const handleChange = (name) => (event) => {
-    const vals = {
-      event: stubhubSearchEvent,
-      venue: stubhubSearchVenue,
-      [name]: event.target.value,
-    };
-    updateSearch(true, vals);
+  const {
+    searchEvent, searchVenue, searchEventInput,
+    searchVenueInput, updateSearchInput, delayUpdate,
+    updateSearchEnabled, toggleUpdateSearchEnabled, set,
+  } = useStubHub();
+
+  console.log(updateSearchEnabled);
+
+  const handleChange = (name) => (value) => {
+    set(name)(value);
+    delayUpdate({ event: searchEventInput, venue: searchVenueInput, [name]: value }, 1000);
   };
 
   const { loading, error, data } = useQuery(SEARCH_QUERY, {
-    variables: { offset: 0, event_name: stubhubSearchEvent, venue_name: stubhubSearchVenue },
+    variables: { offset: 0, event_name: searchEvent, venue_name: searchVenue },
   });
 
 
@@ -51,17 +53,17 @@ export default function Stubhub() {
         }
         label="Update search when clicking events"
       />
-      <TextField
+      <SearchInput
         label="Event Name"
-        value={stubhubSearchEvent}
-        onChange={handleChange('event')}
-        margin="normal"
+        value={searchEventInput}
+        onChange={handleChange('searchEventInput')}
+        delay={1000}
       />
-      <TextField
+      <SearchInput
         label="Venue"
-        value={stubhubSearchVenue}
-        onChange={handleChange('venue')}
-        margin="normal"
+        value={searchVenueInput}
+        onChange={handleChange('searchVenueInput')}
+        delay={1000}
       />
       <div
         style={{ flexFlow: '1 0 auto', overflow: 'auto' }}
