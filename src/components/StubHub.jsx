@@ -10,6 +10,7 @@ import Error from './Error';
 import StubHubEvent from './StubHubEvent';
 import SearchInput from './SearchInput';
 import { useStubHub } from '../context/StubHubContext';
+import { useStubHubSearchFields } from '../context/StubHubSearchFieldsContext';
 
 
 const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String, $venue_name: String) {
@@ -18,32 +19,34 @@ const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String,
     }
   }`;
 
-export default function Stubhub() {
+function StubhubSearchFields() {
   const {
-    hasActiveEvent,
-    activeStubHubEvent,
-    setActiveStubHubEvent,
-    getActiveStubHubEventId,
-    toggleMapDialogOpen,
-  } = useContext(EventContext);
+    searchEventInput,
+    searchVenueInput,
+    updateSearchEnabled,
+    toggleUpdateSearchEnabled,
+    set,
+    timer,
+  } = useStubHubSearchFields();
 
-  const {
-    searchEvent, searchVenue, searchEventInput,
-    searchVenueInput, updateSearchInput, delayUpdate,
-    updateSearchEnabled, toggleUpdateSearchEnabled, set,
-  } = useStubHub();
+  const { updateSearch } = useStubHub();
 
-  console.log(updateSearchEnabled);
+  const setTimer = set('timer');
 
-  const handleChange = (name) => (value) => {
-    set(name)(value);
-    delayUpdate({ event: searchEventInput, venue: searchVenueInput, [name]: value }, 1000);
+  const delayUpdate = (data, delay) => {
+    if (timer) { clearInterval(timer); }
+
+    setTimer(setTimeout(
+      () => updateSearch(data), delay,
+    ));
   };
 
-  const { loading, error, data } = useQuery(SEARCH_QUERY, {
-    variables: { offset: 0, event_name: searchEvent, venue_name: searchVenue },
-  });
-
+  const handleChange = (name) => (value) => {
+    delayUpdate({ event: searchEventInput, venue: searchVenueInput, [name]: value }, 1000);
+    set(name)(value);
+    // if (timer) { clearInterval(timer); }
+    // delayUpdate({ event: searchEventInput, venue: searchVenueInput, [name]: value }, 1000);
+  };
 
   return (
     <>
@@ -65,24 +68,52 @@ export default function Stubhub() {
         onChange={handleChange('searchVenueInput')}
         delay={1000}
       />
+    </>
+  );
+}
+
+function StubHubSearchResults() {
+  const {
+    hasActiveEvent,
+    activeStubHubEvent,
+    setActiveStubHubEvent,
+    getActiveStubHubEventId,
+    toggleMapDialogOpen,
+  } = useContext(EventContext);
+
+  const { searchEvent, searchVenue } = useStubHub();
+
+  const { loading, error, data } = useQuery(SEARCH_QUERY, {
+    variables: { offset: 0, event_name: searchEvent, venue_name: searchVenue },
+  });
+
+  if (loading) return (<CircularProgress />);
+  if (error) return (<Error />);
+  if (data && data.findStubHubEvents) {
+    return data.findStubHubEvents.map(
+      (event) => (
+        <StubHubEvent
+          getActiveStubHubEventId={getActiveStubHubEventId}
+          hasActiveEvent={hasActiveEvent}
+          activeStubHubEvent={activeStubHubEvent}
+          toggleMapDialogOpen={toggleMapDialogOpen}
+          setActiveStubHubEvent={setActiveStubHubEvent}
+          key={event.stubhub_event_id}
+          {...event}
+        />
+      ),
+    );
+  }
+}
+
+export default function Stubhub() {
+  return (
+    <>
+      <StubhubSearchFields />
       <div
         style={{ flexFlow: '1 0 auto', overflow: 'auto' }}
       >
-        {loading && <CircularProgress />}
-        {error && <Error />}
-        {data && data.findStubHubEvents && data.findStubHubEvents.map(
-          (event) => (
-            <StubHubEvent
-              getActiveStubHubEventId={getActiveStubHubEventId}
-              hasActiveEvent={hasActiveEvent}
-              activeStubHubEvent={activeStubHubEvent}
-              toggleMapDialogOpen={toggleMapDialogOpen}
-              setActiveStubHubEvent={setActiveStubHubEvent}
-              key={event.stubhub_event_id}
-              {...event}
-            />
-          ),
-        )}
+        <StubHubSearchResults />
       </div>
     </>
   );

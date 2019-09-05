@@ -5,11 +5,8 @@ const StubHubContext = React.createContext([{}, () => {}]);
 const StubHubProvider = ({ children }) => {
   const [state, setState] = useState(
     {
-      searchEventInput: '',
-      searchVenueInput: '',
       searchEvent: '',
       searchVenue: '',
-      updateSearchEnabled: true,
       timer: null,
     },
   );
@@ -30,10 +27,8 @@ const useStubHub = () => {
   const setTimer = set('timer');
 
   const {
-    searchEventInput, searchVenueInput, searchEvent, searchVenue, updateSearchEnabled, timer,
+    searchEvent, searchVenue, timer,
   } = ctx;
-
-  const toggleUpdateSearchEnabled = () => set('updateSearchEnabled')(!updateSearchEnabled);
 
   const updateSearch = ({ event, venue }) => setContext({
     ...ctx,
@@ -41,14 +36,7 @@ const useStubHub = () => {
     searchVenue: venue,
   });
 
-  const updateSearchInput = ({ event, venue }) => setContext({
-    ...ctx,
-    searchEventInput: event,
-    searchVenueInput: venue,
-  });
-
   const delayUpdate = (data, delay) => {
-    console.log(searchEventInput,searchVenueInput);
     // if (timer) { clearInterval(timer); }
     setTimeout(
       () => updateSearch(data), delay,
@@ -61,13 +49,8 @@ const useStubHub = () => {
   };
 
   return {
-    toggleUpdateSearchEnabled,
-    updateSearchEnabled,
     updateSearch,
-    updateSearchInput,
     delayUpdate,
-    searchEventInput,
-    searchVenueInput,
     searchEvent,
     searchVenue,
     set,

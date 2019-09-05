@@ -16,6 +16,7 @@ import Stubhub from './components/StubHub';
 import Uptick from './components/Uptick';
 import EventContext from './context/EventContext';
 import { StubHubProvider } from './context/StubHubContext';
+import { StubHubSearchFieldsProvider } from './context/StubHubSearchFieldsContext';
 
 
 const client = new GraphQLClient({
@@ -54,12 +55,13 @@ function App() {
       </Authorized>
       <Authorized>
         <StubHubProvider>
-          <EventContext.Provider value={context}>
-            <CssBaseline />
+          <StubHubSearchFieldsProvider>
+            <EventContext.Provider value={context}>
+              <CssBaseline />
 
-            <Header />
+              <Header />
 
-            {activeEvent && activeStubHubEvent
+              {activeEvent && activeStubHubEvent
           && (
           <MapConfirm
             toggleMapDialogOpen={toggleMapDialogOpen}
@@ -70,20 +72,21 @@ function App() {
           )}
 
 
-            <Grid container style={{ height: 'calc(100% - 114px)' }}>
-              <Grid item style={{ height: '100%', width: '50%' }}>
-                <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
-                  <Uptick />
-                </Paper>
-              </Grid>
+              <Grid container style={{ height: 'calc(100% - 114px)' }}>
+                <Grid item style={{ height: '100%', width: '50%' }}>
+                  <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
+                    <Uptick />
+                  </Paper>
+                </Grid>
 
-              <Grid item style={{ height: '100%', width: '50%' }}>
-                <Paper className="stubhub">
-                  <Stubhub />
-                </Paper>
+                <Grid item style={{ height: '100%', width: '50%' }}>
+                  <Paper className="stubhub">
+                    <Stubhub />
+                  </Paper>
+                </Grid>
               </Grid>
-            </Grid>
-          </EventContext.Provider>
+            </EventContext.Provider>
+          </StubHubSearchFieldsProvider>
         </StubHubProvider>
       </Authorized>
     </Auth>
