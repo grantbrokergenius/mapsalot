@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import { Grid, Typography } from '@material-ui/core';
+import { useMutation } from 'graphql-hooks';
 import date from '../utils/date';
 
 const MAP_EVENT_MUTATION = 'mutation Map(id: String!, stubhub: Int!) { mapEvent(id: $id, stubhub: $stubhub) { ok } }';
@@ -18,9 +19,9 @@ function MapConfirm({
   const [mapEvent] = useMutation(MAP_EVENT_MUTATION);
 
   const confirm = async () => {
-    await mapEvent({ variables: { id: activeEvent.bg_event_id, stubhub: activeStubHubEvent.stubhub_event_id }});
+    await mapEvent({ variables: { id: activeEvent.bg_event_id, stubhub: activeStubHubEvent.stubhub_event_id } });
     toggleMapDialogOpen();
-  }
+  };
 
   return (
     <Dialog
