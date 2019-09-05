@@ -2,7 +2,6 @@
 import React, { useContext } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
 import { useQuery } from 'graphql-hooks';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EventContext from '../context/EventContext';
@@ -26,31 +25,14 @@ function StubhubSearchFields() {
     updateSearchEnabled,
     toggleUpdateSearchEnabled,
     updateSearchInput,
-    set,
-    timer,
   } = useStubHubSearchFields();
 
-  const { updateSearch } = useStubHub();
-
-  const setTimer = set('timer');
-
-  const delayUpdate = (data, delay) => {
-    if (timer) { clearInterval(timer); }
-
-    setTimer(setTimeout(
-      () => updateSearch(data), delay,
-    ));
-  };
+  const { delayUpdate } = useStubHub();
 
   const handleChange = (name) => (value) => {
-
     const data = { searchEventInput, searchVenueInput, [name]: value };
-    console.log(data);
     delayUpdate({ event: data.searchEventInput, venue: data.searchVenueInput }, 1000);
     updateSearchInput(data);
-    // set(name)(value);
-    // if (timer) { clearInterval(timer); }
-    // delayUpdate({ event: searchEventInput, venue: searchVenueInput, [name]: value }, 1000);
   };
 
   return (

@@ -37,15 +37,10 @@ const useStubHub = () => {
   });
 
   const delayUpdate = (data, delay) => {
-    // if (timer) { clearInterval(timer); }
-    setTimeout(
-      () => updateSearch(data), delay,
-    );
-    /*
+    if (timer) { clearInterval(timer); }
     setTimer(setTimeout(
-      () => updateSearch({ event: searchEventInput, venue: searchVenueInput }), delay,
+      () => updateSearch(data), delay,
     ));
-    */
   };
 
   return {
