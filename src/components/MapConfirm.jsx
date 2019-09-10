@@ -13,6 +13,47 @@ import date from '../utils/date';
 
 const MAP_EVENT_MUTATION = 'mutation Map(id: String!, stubhub: Int!) { mapEvent(id: $id, stubhub: $stubhub) { ok } }';
 
+function MapTable({ left, right, children }) {
+  return (<Grid container spacing={1} justify="center">
+  <Grid container item xs={12} spacing={0}>
+    <Grid item xs>
+      <Typography>{left}</Typography>
+    </Grid>
+    <Grid item xs={1} />
+    <Grid item xs>
+      <Typography>{right}</Typography>
+    </Grid>
+    {children}
+  </Grid>
+  </Grid>);
+}
+
+MapTable.propTypes = {
+  left: PropTypes.string.isRequired,
+  right: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+function Row({ left, right }) {
+  return (<Grid container item xs={12} spacing={0}>
+    <Grid item xs>
+      <Typography>{left}</Typography>
+    </Grid>
+    <Grid item xs={1}>
+      <SwapHorizIcon />
+    </Grid>
+    <Grid item xs>
+      <Typography>{right}</Typography>
+    </Grid>
+  </Grid>)
+}
+
+
+Row.propTypes = {
+  left: PropTypes.string.isRequired,
+  right: PropTypes.string.isRequired,
+};
+
 function MapConfirm({
   toggleMapDialogOpen, mapDialogOpen, activeEvent, activeStubHubEvent,
 }) {
@@ -32,50 +73,12 @@ function MapConfirm({
       <DialogContent>
         {activeEvent && activeStubHubEvent
     && (
-      <Grid container spacing={1} justify="center">
-        <Grid container item xs={12} spacing={0}>
-          <Grid item xs>
-            <Typography>Uptick</Typography>
-          </Grid>
-          <Grid item xs={1} />
-          <Grid item xs>
-            <Typography>StubHub</Typography>
-          </Grid>
-        </Grid>
-        <Grid container item xs={12} spacing={0}>
-          <Grid item xs>
-            <Typography>{activeEvent.event_name}</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <SwapHorizIcon />
-          </Grid>
-          <Grid item xs>
-            <Typography>{activeStubHubEvent.event_name}</Typography>
-          </Grid>
-        </Grid>
-        <Grid container item xs={12} spacing={0}>
-          <Grid item xs>
-            <Typography>{activeEvent.venue_name}</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <SwapHorizIcon />
-          </Grid>
-          <Grid item xs>
-            <Typography>{activeStubHubEvent.venue_name}</Typography>
-          </Grid>
-        </Grid>
-        <Grid container item xs={12} spacing={0}>
-          <Grid item xs>
-            <Typography>{date(activeEvent.event_date)}</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <SwapHorizIcon />
-          </Grid>
-          <Grid item xs>
-            <Typography>{date(activeStubHubEvent.event_date)}</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
+      <MapTable left="Uptick" right="StubHub">
+        <Row left={activeEvent.event_name} right={activeStubHubEvent.event_name}/>
+        <Row left={activeEvent.venue_name} right={activeStubHubEvent.venue_name}/>
+        <Row left={date(activeEvent.event_date)} right={date(activeStubHubEvent.event_date)}/>
+        
+      </MapTable>
     )}
       </DialogContent>
       <DialogActions>
