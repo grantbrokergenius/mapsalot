@@ -1,23 +1,28 @@
 import db from '../db';
 
-const findAll = (limit = 100, offset = 0, order = 'event_date', dir = 'asc') => db.select().from('bg_events')
-  .whereNotNull('event_name')
-  .whereNull('stubhub_event_id')
-  .whereRaw('`event_date` > (now() - INTERVAL 1 HOUR)')
-  .orderBy(order, dir)
-  .limit(limit)
-  .offset(offset);
+const allowedSort = ['event_date', 'event_name', 'venue_name']
 
-const findSome = (params, ...args) => {
-  const q = findAll(...args);
-  Object.keys(params).forEach((x) => params[x] && q.where(x, 'like', `%${params[x]}%`.replace(/\s+/, '%')));
-  return q;
-};
 
-const markUnresolved = () => true;
+/*
+ $update = DB::table('unresolveable_mappings')
+            ->where('exchange_id', $exchangeId)
+            ->where('bg_event_id', $bgEventId)
+            ->count();
+        if ($update ==  0) {
+            return DB::table('unresolveable_mappings')
+            ->insert([
+                'bg_event_id' => $bgEventId,
+                'exchange_id' => $exchangeId,
+                'declared_by' => $userId,
+                'created_at' => Carbon::now()
+            ]);
+        }
+        */
+const markUnresolved = (bg_event_id, exchange_id, user_id) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [ bg_event_id, exchange_id, user_id ]);
 
-const findReal = () => db.raw(`SELECT bg_events.bg_event_id, pos_event_id, stubhub_event_id, event_name, venue_name, event_date,
-pos_name, event_mappings.exchange_id, event_mappings.exchange_event_id, mapping_source
+const findSome = ({
+  date_from, date_to, event_name, venue_name,
+}, limit = 100, offset = 0, order = 'event_date', dir = 'asc') => allowedSort.includes(order) && ['asc', 'desc'].includes(dir) && db.raw(`SELECT bg_events.bg_event_id as bg_event_id, event_name, venue_name, event_date, pos_name
 FROM \`bg_events\`
 LEFT JOIN \`event_mapping_flags\`
 ON \`bg_events\`.\`bg_event_id\` = \`event_mapping_flags\`.\`bg_event_id\`
@@ -28,12 +33,15 @@ LEFT JOIN \`unresolveable_mappings\`
 ON \`event_mappings\`.\`bg_event_id\` = \`unresolveable_mappings\`.\`bg_event_id\`
 AND \`event_mappings\`.\`exchange_id\` = \`unresolveable_mappings\`.\`exchange_id\`
 WHERE \`unresolveable_mappings\`.\`bg_event_id\` IS NULL
-AND \`bg_events\`.\`event_date\` BETWEEN :start AND :end
+AND event_name LIKE ?
+AND venue_name LIKE ?
 AND (
 \`event_mappings\`.\`approved\` = 0
 OR \`event_mappings\`.\`approved\` IS NULL
 OR \`event_mappings\`.\`exchange_id\` IS NULL
-)`);
+) ORDER BY ${order} ${dir} LIMIT ${limit} OFFSET ${offset}`, [event_name, venue_name]).then(res=>res[0]);
+
+const findAll = (...args) => findSome({ event_name: '%', venue_name: '%', })
 
 /*
 $sql = <<<SQL
@@ -71,4 +79,6 @@ SQL;
         */
 
 
-export default { findAll, findSome, markUnresolved };
+export default {
+  findAll, findSome, markUnresolved,
+};

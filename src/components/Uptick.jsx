@@ -17,6 +17,8 @@ import Event from './Event';
 import EventContext from '../context/EventContext';
 import Error from './Error';
 import SearchInput from './SearchInput';
+import { useStubHubSearchFields } from '../context/StubHubSearchFieldsContext';
+import { useStubHub } from '../context/StubHubContext';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bg_event_id, event_name, venue_name, event_date } }';
 
@@ -31,9 +33,13 @@ export default function Uptick() {
     date_to: new Date(),
   });
 
-  const { setActiveEvent, activeEvent, updateSearch } = useContext(
+  const { setActiveEvent, activeEvent } = useContext(
     EventContext,
   );
+
+  const { updateSearchInput, updateSearchEnabled } = useStubHubSearchFields();
+  const { updateSearch } = useStubHub();
+
   const activeEventId = activeEvent && activeEvent.bg_event_id;
 
   const { loading, error, data } = useQuery(LIST_QUERY, {
@@ -52,7 +58,10 @@ export default function Uptick() {
 
   const setSelected = (event) => {
     setActiveEvent(event);
-    updateSearch(false, { event: event.event_name, venue: event.venue_name });
+    if (updateSearchEnabled) {
+      updateSearch({ event: event.event_name, venue: event.venue_name });
+      updateSearchInput({ searchEventInput: event.event_name, searchVenueInput: event.venue_name });
+    }
   };
 
 
