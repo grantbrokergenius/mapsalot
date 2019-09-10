@@ -2,7 +2,23 @@ import db from '../db';
 
 const allowedSort = ['event_date', 'event_name', 'venue_name']
 
-const markUnresolved = () => true;
+
+/*
+ $update = DB::table('unresolveable_mappings')
+            ->where('exchange_id', $exchangeId)
+            ->where('bg_event_id', $bgEventId)
+            ->count();
+        if ($update ==  0) {
+            return DB::table('unresolveable_mappings')
+            ->insert([
+                'bg_event_id' => $bgEventId,
+                'exchange_id' => $exchangeId,
+                'declared_by' => $userId,
+                'created_at' => Carbon::now()
+            ]);
+        }
+        */
+const markUnresolved = (bg_event_id, exchange_id, user_id) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [ bg_event_id, exchange_id, user_id ]);
 
 const findSome = ({
   date_from, date_to, event_name, venue_name,
