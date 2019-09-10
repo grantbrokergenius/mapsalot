@@ -24,12 +24,13 @@ const queries = {
       order: { type: GraphQLString },
       event_name: { type: GraphQLString },
       venue_name: { type: GraphQLString },
-
+      date_from: { type: GraphQLString },
+      date_to: { type: GraphQLString },
     },
     resolve: async (v, {
       // eslint-disable-next-line camelcase
-      limit, offset, order, event_name, venue_name,
-    }) => Event.findSome({ event_name, venue_name }, limit, offset, order),
+      limit, offset, order, event_name, venue_name, date_from, date_to,
+    }) => Event.findSome({ event_name, venue_name, date_from, date_to }, limit, offset, order),
   },
 };
 
