@@ -1,4 +1,5 @@
 import db from '../db';
+import { auth, authWithUser } from '../utils/authorized';
 
 const allowedSort = ['event_date', 'event_name', 'venue_name']
 
@@ -18,9 +19,9 @@ const allowedSort = ['event_date', 'event_name', 'venue_name']
             ]);
         }
         */
-const markUnresolved = (bg_event_id, exchange_id, user_id) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [ bg_event_id, exchange_id, user_id ]);
+const markUnresolved = authWithUser((user, bg_event_id, exchange_id) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [ bg_event_id, exchange_id, user.user_id ]));
 
-const findSome = ({
+const findSome = auth(({
   date_from, date_to, event_name, venue_name,
 }, limit = 100, offset = 0, order = 'event_date', dir = 'asc') => allowedSort.includes(order) && ['asc', 'desc'].includes(dir) && db.raw(`SELECT bg_events.bg_event_id as bg_event_id, event_name, venue_name, event_date, pos_name
 FROM \`bg_events\`
@@ -39,9 +40,9 @@ AND (
 \`event_mappings\`.\`approved\` = 0
 OR \`event_mappings\`.\`approved\` IS NULL
 OR \`event_mappings\`.\`exchange_id\` IS NULL
-) ORDER BY ${order} ${dir} LIMIT ${limit} OFFSET ${offset}`, [event_name, venue_name]).then(res=>res[0]);
+) ORDER BY ${order} ${dir} LIMIT ${limit} OFFSET ${offset}`, [event_name, venue_name]).then(res=>res[0]));
 
-const findAll = (...args) => findSome({ event_name: '%', venue_name: '%', })
+const findAll = auth((...args) => findSome({ event_name: '%', venue_name: '%' }));
 
 /*
 $sql = <<<SQL

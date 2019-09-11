@@ -19,7 +19,7 @@ const queries = {
     resolve: async (v, {
       // eslint-disable-next-line camelcase
       limit, offset, order, event_name, venue_name,
-    }) => findEvents({
+    }, ctx) => findEvents(ctx, {
       start: offset, rows: limit, venue: venue_name, name: event_name, sort: order,
     }),
   },
