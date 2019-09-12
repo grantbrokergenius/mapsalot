@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import Switch from '@material-ui/core/Switch';
 import { useQuery } from 'graphql-hooks';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -22,6 +23,8 @@ function StubhubSearchFields() {
   const {
     searchEventInput,
     searchVenueInput,
+    dateFromInput,
+    dateToInput,
     updateSearchEnabled,
     toggleUpdateSearchEnabled,
     updateSearchInput,
@@ -30,7 +33,9 @@ function StubhubSearchFields() {
   const { delayUpdate } = useStubHub();
 
   const handleChange = (name) => (value) => {
-    const data = { searchEventInput, searchVenueInput, [name]: value };
+    const data = {
+      searchEventInput, searchVenueInput, dateFromInput, dateToInput, [name]: value,
+    };
     delayUpdate({ event: data.searchEventInput, venue: data.searchVenueInput }, 1000);
     updateSearchInput(data);
   };
@@ -54,6 +59,30 @@ function StubhubSearchFields() {
         value={searchVenueInput}
         onChange={handleChange('searchVenueInput')}
         delay={1000}
+      />
+      <KeyboardDatePicker
+        disableToolbar
+        variant="inline"
+        format="MM/dd/yyyy"
+        margin="normal"
+        id="date-from"
+        label="Date from"
+        value={dateFromInput}
+        KeyboardButtonProps={{
+          'aria-label': 'change date',
+        }}
+      />
+      <KeyboardDatePicker
+        disableToolbar
+        variant="inline"
+        format="MM/dd/yyyy"
+        margin="normal"
+        id="date-to"
+        label="Date to"
+        value={dateToInput}
+        KeyboardButtonProps={{
+          'aria-label': 'change date',
+        }}
       />
     </>
   );

@@ -7,6 +7,8 @@ const StubHubSearchFieldsProvider = ({ children }) => {
     {
       searchEventInput: '',
       searchVenueInput: '',
+      dateFromInput: '',
+      dateToInput: '',
       updateSearchEnabled: true,
       timer: null,
     },
@@ -26,7 +28,7 @@ const useStubHubSearchFields = () => {
   const set = (name) => (val) => setContext({ ...ctx, [name]: val });
 
   const {
-    searchEventInput, searchVenueInput, searchEvent, searchVenue, updateSearchEnabled, timer,
+    searchEventInput, searchVenueInput, dateFromInput, dateToInput, updateSearchEnabled,
   } = ctx;
 
   const toggleUpdateSearchEnabled = () => set('updateSearchEnabled')(!updateSearchEnabled);
@@ -42,8 +44,8 @@ const useStubHubSearchFields = () => {
     updateSearchInput,
     searchEventInput,
     searchVenueInput,
-    searchEvent,
-    searchVenue,
+    dateFromInput,
+    dateToInput,
     set,
   };
 };
