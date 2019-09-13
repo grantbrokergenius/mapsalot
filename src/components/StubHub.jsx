@@ -10,7 +10,7 @@ import Error from './Error';
 import StubHubEvent from './StubHubEvent';
 import SearchInput from './SearchInput';
 import { useStubHub } from '../context/StubHubContext';
-import { useStubHubSearchFields } from '../context/StubHubSearchFieldsContext';
+import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
 
 
 const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String, $venue_name: String) {
@@ -21,43 +21,33 @@ const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String,
 
 function StubhubSearchFields() {
   const {
-    searchEventInput,
-    searchVenueInput,
-    dateFromInput,
-    dateToInput,
-    updateSearchEnabled,
-    toggleUpdateSearchEnabled,
-    updateSearchInput,
-  } = useStubHubSearchFields();
+    values,
+    updateInputValue,
+  } = useStubHubSearchValues();
 
-  const { delayUpdate } = useStubHub();
+  const { updateSearchValue } = useStubHub();
 
-  const handleChange = (name) => (value) => {
-    const data = {
-      searchEventInput, searchVenueInput, dateFromInput, dateToInput, [name]: value,
-    };
-    delayUpdate({ event: data.searchEventInput, venue: data.searchVenueInput }, 1000);
-    updateSearchInput(data);
-  };
 
   return (
     <>
-      <FormControlLabel
+      {/* <FormControlLabel
         control={
           <Switch checked={updateSearchEnabled} onChange={toggleUpdateSearchEnabled} value="updateSearchEnabled" />
         }
         label="Update search when clicking events"
-      />
+      /> */ }
       <SearchInput
         label="Event Name"
-        value={searchEventInput}
-        onChange={handleChange('searchEventInput')}
+        value={values.event}
+        onChange={updateInputValue('event')}
+        delayedChange={updateSearchValue('event')}
         delay={1000}
       />
       <SearchInput
         label="Venue"
-        value={searchVenueInput}
-        onChange={handleChange('searchVenueInput')}
+        value={values.venue}
+        onChange={updateInputValue('venue')}
+        delayedChange={updateSearchValue('venue')}
         delay={1000}
       />
       <KeyboardDatePicker
@@ -67,7 +57,7 @@ function StubhubSearchFields() {
         margin="normal"
         id="date-from"
         label="Date from"
-        value={dateFromInput}
+        value={values.dateFrom}
         KeyboardButtonProps={{
           'aria-label': 'change date',
         }}
@@ -79,7 +69,7 @@ function StubhubSearchFields() {
         margin="normal"
         id="date-to"
         label="Date to"
-        value={dateToInput}
+        value={values.dateTo}
         KeyboardButtonProps={{
           'aria-label': 'change date',
         }}
@@ -97,10 +87,10 @@ function StubHubSearchResults() {
     toggleMapDialogOpen,
   } = useContext(EventContext);
 
-  const { searchEvent, searchVenue } = useStubHub();
+  const { values } = useStubHub();
 
   const { loading, error, data } = useQuery(SEARCH_QUERY, {
-    variables: { offset: 0, event_name: searchEvent, venue_name: searchVenue },
+    variables: { offset: 0, event_name: values.event, venue_name: values.venue },
   });
 
   if (loading) return (<CircularProgress />);

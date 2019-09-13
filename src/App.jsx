@@ -16,7 +16,7 @@ import Stubhub from './components/StubHub';
 import Uptick from './components/Uptick';
 import EventContext from './context/EventContext';
 import { StubHubProvider } from './context/StubHubContext';
-import { StubHubSearchFieldsProvider } from './context/StubHubSearchFieldsContext';
+import { StubHubSearchValuesProvider } from './context/StubHubSearchValuesContext';
 
 
 const client = new GraphQLClient({
@@ -55,7 +55,7 @@ function App() {
       </Authorized>
       <Authorized>
         <StubHubProvider>
-          <StubHubSearchFieldsProvider>
+          <StubHubSearchValuesProvider>
             <EventContext.Provider value={context}>
               <CssBaseline />
 
@@ -86,7 +86,7 @@ function App() {
                 </Grid>
               </Grid>
             </EventContext.Provider>
-          </StubHubSearchFieldsProvider>
+          </StubHubSearchValuesProvider>
         </StubHubProvider>
       </Authorized>
     </Auth>
