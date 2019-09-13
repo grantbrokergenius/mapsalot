@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 
 function SearchInput({
-  onChange, label, value,
+  onChange, delayedChange, label, value, delay,
 }) {
+  const [timer, setTimer] = React.useState(null);
+
   const handleChangeEvent = (e) => {
-    const val = e.target.value;
-    onChange(val);
+    const v = e.target.value;
+    clearTimeout(timer);
+    setTimer(setTimeout(() => delayedChange(v), delay));
+    onChange(v);
   };
 
   return (
@@ -23,12 +27,15 @@ function SearchInput({
 
 SearchInput.propTypes = {
   onChange: PropTypes.func.isRequired,
+  delayedChange: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string,
+  delay: PropTypes.number,
 };
 
 SearchInput.defaultProps = {
   value: '',
+  delay: 1000,
 };
 
 export default SearchInput;
