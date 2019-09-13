@@ -17,12 +17,12 @@ import Event from './Event';
 import EventContext from '../context/EventContext';
 import Error from './Error';
 import SearchInput from './SearchInput';
-import { useStubHubSearchFields } from '../context/StubHubSearchFieldsContext';
+import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
 import { useStubHub } from '../context/StubHubContext';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bg_event_id, event_name, venue_name, event_date } }';
 
-export default function Uptick() {
+function UptickChild({ setSHSearchValues }) {
   const PER_PAGE = 100;
 
   const [offset, setOffset] = useState(0);
@@ -37,8 +37,14 @@ export default function Uptick() {
     EventContext,
   );
 
-  const { updateSearchInput, updateSearchEnabled } = useStubHubSearchFields();
-  const { updateSearch } = useStubHub();
+
+  /*
+  const MyWrapper = (props) => { const ctx = useContext(Ctx); return React.useMemo(() =>
+    <ActualComponent {...props} ctx={ctx} />, [props, ctx]) }
+  */
+  // bumpy:
+  // const { setValues: setSHSearchValues } = useStubHubSearchValues();
+  const { update: updateSHSearch } = useStubHub();
 
   const activeEventId = activeEvent && activeEvent.bg_event_id;
 
@@ -58,10 +64,11 @@ export default function Uptick() {
 
   const setSelected = (event) => {
     setActiveEvent(event);
-    if (updateSearchEnabled) {
-      updateSearch({ event: event.event_name, venue: event.venue_name });
-      updateSearchInput({ searchEventInput: event.event_name, searchVenueInput: event.venue_name });
-    }
+    // if (updateSearchEnabled) {
+    updateSHSearch({ event: event.event_name, venue: event.venue_name });
+    // bumpy
+    setSHSearchValues({ event: event.event_name, venue: event.venue_name });
+    // }
   };
 
 
@@ -150,4 +157,11 @@ export default function Uptick() {
       </div>
     </>
   );
+}
+
+export default function Uptick() {
+  const { setValues: setSHSearchValues } = useStubHubSearchValues();
+  return React.useMemo(() => (
+    <UptickChild setSHSearchValues={setSHSearchValues} />
+  ), [setSHSearchValues]);
 }
