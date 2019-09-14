@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import Switch from '@material-ui/core/Switch';
 import { useQuery } from 'graphql-hooks';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EventContext from '../context/EventContext';
@@ -32,7 +30,8 @@ function StubhubSearchFields() {
     <>
       {/* <FormControlLabel
         control={
-          <Switch checked={updateSearchEnabled} onChange={toggleUpdateSearchEnabled} value="updateSearchEnabled" />
+          <Switch checked={updateSearchEnabled}
+            onChange={toggleUpdateSearchEnabled} value="updateSearchEnabled" />
         }
         label="Update search when clicking events"
       /> */ }

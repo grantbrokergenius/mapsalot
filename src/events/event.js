@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import db from '../db';
 import { auth, authWithUser } from '../utils/authorized';
 import { yesterday, twoyears } from './dates';

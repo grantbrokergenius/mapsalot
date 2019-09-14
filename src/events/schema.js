@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {
   GraphQLList, GraphQLBoolean, GraphQLString,
 } from 'graphql';
@@ -49,7 +50,11 @@ const mutations = {
     args: {
       bg_event_id: { type: GraphQLInt },
     },
-    resolve: async (v, { bg_event_id, stubhub_event_id }, ctx) => Event.markUnresolved(ctx, bg_event_id, stubhub_event_id),
+    resolve: async (
+      v,
+      { bg_event_id, stubhub_event_id },
+      ctx,
+    ) => Event.markUnresolved(ctx, bg_event_id, stubhub_event_id),
   },
 };
 

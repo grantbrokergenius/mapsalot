@@ -64,7 +64,9 @@ function MapConfirm({
   const [mapEvent] = useMutation(MAP_EVENT_MUTATION);
 
   const confirm = async () => {
-    await mapEvent({ variables: { id: activeEvent.bg_event_id, stubhub: activeStubHubEvent.stubhub_event_id } });
+    await mapEvent({
+      variables: { id: activeEvent.bg_event_id, stubhub: activeStubHubEvent.stubhub_event_id },
+    });
     toggleMapDialogOpen();
   };
 
@@ -89,7 +91,7 @@ function MapConfirm({
         <Button onClick={toggleMapDialogOpen} color="primary">
             Cancel (N)
         </Button>
-        <Button onClick={toggleMapDialogOpen} color="primary" autoFocus>
+        <Button onClick={confirm} color="primary" autoFocus>
             Confirm (Y)
         </Button>
       </DialogActions>
