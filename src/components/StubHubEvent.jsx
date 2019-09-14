@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import LaunchIcon from '@material-ui/icons/Launch';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
-import date from '../utils/date';
+import { dateformat } from '../utils/date';
 
 const openLink = (id) => window.open(`https://stubhub.com/event/${id}`, '_blank');
 
@@ -27,7 +27,7 @@ function StubHubEvent({
 
   return (
     <ListItem selected={selected} button key={stubhub_event_id} onClick={handleClick}>
-      <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />
+      <ListItemText primary={event_name} secondary={`${venue_name} || ${dateformat(event_date)}`} />
       <ListItemSecondaryAction>
         {hasActiveEvent()
         && (

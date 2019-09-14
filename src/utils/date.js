@@ -1,3 +1,7 @@
-import dateformat from 'dateformat';
+import { format, subDays, addDays } from 'date-fns';
 
-export default (epoch) => dateformat(new Date(parseInt(epoch, 10)), 'ddd mmm d, yyyy h:MM TT');
+const yesterday = (fmt) => format(subDays(new Date(), 1), fmt);
+const twoyears = (fmt) => format(addDays(new Date(), 750), fmt);
+const dateformat = (seconds) => format(new Date(Number(seconds)), 'E MMM d, yyyy h:mm a');
+
+export { yesterday, twoyears, dateformat };

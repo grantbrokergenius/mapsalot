@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { yesterday, twoyears } from '../events/dates';
+import { yesterday, twoyears } from '../utils/date';
 
 const StubHubContext = React.createContext([{}, () => {}]);
 

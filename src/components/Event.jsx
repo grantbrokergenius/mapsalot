@@ -5,7 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
-import date from '../utils/date';
+import { dateformat } from '../utils/date';
 import MarkUnresolved from './MarkUnresolved';
 
 
@@ -44,7 +44,7 @@ function Event({
   const selected = activeEventId === bg_event_id;
   return (
     <ListItem selected={selected} classes={classes} button key={bg_event_id} onClick={handleClick}>
-      <ListItemText primary={event_name} secondary={`${venue_name} || ${date(event_date)}`} />
+      <ListItemText primary={event_name} secondary={`${venue_name} || ${dateformat(event_date)}`} />
       {selected
       && (
       <ListItemSecondaryAction>
