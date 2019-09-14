@@ -1,7 +1,6 @@
 import {
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLString,
 } from 'graphql';
 
 import events from './events/schema';
@@ -15,15 +14,6 @@ export default new GraphQLSchema({
       ...events.queries,
       ...stubhub.queries,
       ...user.queries,
-      hi: {
-        type: GraphQLString,
-        args: {
-          name: { type: GraphQLString },
-        },
-        resolve(v, { name }) {
-          return `hello ${name}`;
-        },
-      },
     },
   }),
 
