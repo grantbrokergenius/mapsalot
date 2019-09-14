@@ -1,5 +1,5 @@
-import qs from '../utils/qs';
-import { auth } from '../utils/authorized';
+import qs from '../../utils/qs';
+import { auth } from '../../utils/authorized';
 
 
 // https://brokergenius.atlassian.net/wiki/spaces/BF/pages/65817627/Stubhub+API+Documentation?preview=/65817627/65817743/API%20Reference%20-%20Event.pdf

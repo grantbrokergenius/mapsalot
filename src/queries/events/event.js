@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import db from '../db';
-import { auth, authWithUser } from '../utils/authorized';
-import { yesterday, twoyears } from '../utils/date';
+import db from '../../db';
+import { auth, authWithUser } from '../../utils/authorized';
+import { yesterday, twoyears } from '../../utils/date';
 
 
 const allowedSort = ['event_date', 'event_name', 'venue_name'];

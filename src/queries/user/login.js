@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import qs from '../utils/qs';
+import qs from '../../utils/qs';
 
 export default (email, password) => fetch('https://adminpanel.brokergenius.net/adminpanel_api/login', {
   headers: {
