@@ -57,11 +57,15 @@ function Event({
 
 Event.propTypes = {
   setSelected: PropTypes.func.isRequired,
-  activeEventId: PropTypes.number.isRequired,
+  activeEventId: PropTypes.number,
   bg_event_id: PropTypes.number.isRequired,
   event_name: PropTypes.string.isRequired,
   venue_name: PropTypes.string.isRequired,
   event_date: PropTypes.string.isRequired,
+};
+
+Event.defaultProps = {
+  activeEventId: -1,
 };
 
 export default Event;
