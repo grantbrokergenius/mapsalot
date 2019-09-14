@@ -1,4 +1,6 @@
 import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
+import { yesterday, twoyears } from '../events/dates';
 
 const StubHubContext = React.createContext([{}, () => {}]);
 
@@ -7,8 +9,8 @@ const StubHubProvider = ({ children }) => {
     {
       event: '',
       venue: '',
-      dateFrom: '',
-      dateTo: '',
+      dateFrom: yesterday('MM/dd/yyyy'),
+      dateTo: twoyears('MM/dd/yyyy'),
     },
   );
 
@@ -19,6 +21,9 @@ const StubHubProvider = ({ children }) => {
   );
 };
 
+StubHubProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 const useStubHub = () => {
   const [values, setValues] = useContext(StubHubContext);

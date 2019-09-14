@@ -25,7 +25,7 @@ function StubhubSearchFields() {
     updateInputValue,
   } = useStubHubSearchValues();
 
-  const { updateSearchValue } = useStubHub();
+  const { values: shValues, updateSearchValue } = useStubHub();
 
 
   return (
@@ -41,35 +41,39 @@ function StubhubSearchFields() {
         value={values.event}
         onChange={updateInputValue('event')}
         delayedChange={updateSearchValue('event')}
-        delay={1000}
+        delay={200}
       />
       <SearchInput
         label="Venue"
         value={values.venue}
         onChange={updateInputValue('venue')}
         delayedChange={updateSearchValue('venue')}
-        delay={1000}
+        delay={200}
       />
       <KeyboardDatePicker
+        autoOk
         disableToolbar
         variant="inline"
         format="MM/dd/yyyy"
         margin="normal"
         id="date-from"
         label="Date from"
-        value={values.dateFrom}
+        value={shValues.dateFrom}
+        onChange={updateSearchValue('dateFrom')}
         KeyboardButtonProps={{
           'aria-label': 'change date',
         }}
       />
       <KeyboardDatePicker
+        autoOk
         disableToolbar
         variant="inline"
         format="MM/dd/yyyy"
         margin="normal"
         id="date-to"
         label="Date to"
-        value={values.dateTo}
+        value={shValues.dateTo}
+        onChange={updateSearchValue('dateTo')}
         KeyboardButtonProps={{
           'aria-label': 'change date',
         }}

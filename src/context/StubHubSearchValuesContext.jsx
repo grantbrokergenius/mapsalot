@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const StubHubSearchValuesContext = React.createContext([{}, () => {}]);
 
@@ -6,8 +7,6 @@ const StubHubSearchValuesProvider = ({ children }) => {
   const [state, setState] = React.useState({
     event: '',
     venue: '',
-    dateFrom: '',
-    dateTo: '',
   });
 
   return (
@@ -15,6 +14,10 @@ const StubHubSearchValuesProvider = ({ children }) => {
       {children}
     </StubHubSearchValuesContext.Provider>
   );
+};
+
+StubHubSearchValuesProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 const useStubHubSearchValues = () => {
