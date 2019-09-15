@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import { Grid, Typography } from '@material-ui/core';
 import { useMutation } from 'graphql-hooks';
-import date from '../utils/date';
+import { dateformat } from '../utils/date';
 
 const MAP_EVENT_MUTATION = 'mutation Map(id: String!, stubhub: Int!) { mapEvent(id: $id, stubhub: $stubhub) { ok } }';
 
@@ -82,7 +82,7 @@ function MapConfirm({
       <MapTable left="Uptick" right="StubHub">
         <Row left={activeEvent.event_name} right={activeStubHubEvent.event_name} />
         <Row left={activeEvent.venue_name} right={activeStubHubEvent.venue_name} />
-        <Row left={date(activeEvent.event_date)} right={date(activeStubHubEvent.event_date)} />
+        <Row left={dateformat(activeEvent.event_date)} right={dateformat(activeStubHubEvent.event_date)} />
 
       </MapTable>
     )}
