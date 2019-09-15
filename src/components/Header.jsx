@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   FormControlLabel, Switch,
 } from '@material-ui/core';
+import Exchanges from './Exchanges';
 import Logout from './Logout';
 
 const useStyles = makeStyles(() => ({
@@ -26,6 +27,7 @@ export default function Header() {
         }
           label="Update search when clicking events"
         />
+        <Exchanges />
         <Logout />
       </Toolbar>
     </AppBar>
