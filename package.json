@@ -10,8 +10,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "test": "jest",
-    "build": "npx babel src -d dist && npx webpack",
-    "dev": "npx babel src -d dist && npx webpack --config webpack.config.dev.js"
+    "build": "npx babel src -x .js -d dist && npx webpack",
+    "dev": "npx babel src -x .js -d dist && npx webpack --config webpack.config.dev.js"
   },
   "keywords": [],
   "author": "",
