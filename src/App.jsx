@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { ClientContext, GraphQLClient } from 'graphql-hooks';
+import { ClientContext, GraphQLClient, useQuery } from 'graphql-hooks';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Auth from './components/Auth';
@@ -24,7 +24,11 @@ const client = new GraphQLClient({
 });
 
 
+const VERIFY_QUERY = 'query Verify { verify }';
+
 function App() {
+  const { loading: vLoading, error: vError, data: vData } = useQuery(VERIFY_QUERY);
+
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeStubHubEvent, setActiveStubHubEvent] = useState(null);
   const [mapDialogOpen, setMapDialogOpen] = useState(false);
@@ -48,20 +52,22 @@ function App() {
     toggleMapDialogOpen,
   };
 
-  return (
-    <Auth>
-      <Authorized anonymous>
-        <Login />
-      </Authorized>
-      <Authorized>
-        <StubHubProvider>
-          <StubHubSearchValuesProvider>
-            <EventContext.Provider value={context}>
-              <CssBaseline />
+  if (vLoading || vError) return (<></>);
+  if (vData) {
+    return (
+      <Auth activeSession={vData.verify}>
+        <Authorized anonymous>
+          <Login />
+        </Authorized>
+        <Authorized>
+          <StubHubProvider>
+            <StubHubSearchValuesProvider>
+              <EventContext.Provider value={context}>
+                <CssBaseline />
 
-              <Header />
+                <Header />
 
-              {activeEvent && activeStubHubEvent
+                {activeEvent && activeStubHubEvent
           && (
           <MapConfirm
             toggleMapDialogOpen={toggleMapDialogOpen}
@@ -72,25 +78,26 @@ function App() {
           )}
 
 
-              <Grid container style={{ height: 'calc(100% - 114px)' }}>
-                <Grid item style={{ height: '100%', width: '50%' }}>
-                  <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
-                    <Uptick />
-                  </Paper>
-                </Grid>
+                <Grid container style={{ height: 'calc(100% - 114px)' }}>
+                  <Grid item style={{ height: '100%', width: '50%' }}>
+                    <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
+                      <Uptick />
+                    </Paper>
+                  </Grid>
 
-                <Grid item style={{ height: '100%', width: '50%' }}>
-                  <Paper className="stubhub">
-                    <Stubhub />
-                  </Paper>
+                  <Grid item style={{ height: '100%', width: '50%' }}>
+                    <Paper className="stubhub">
+                      <Stubhub />
+                    </Paper>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </EventContext.Provider>
-          </StubHubSearchValuesProvider>
-        </StubHubProvider>
-      </Authorized>
-    </Auth>
-  );
+              </EventContext.Provider>
+            </StubHubSearchValuesProvider>
+          </StubHubProvider>
+        </Authorized>
+      </Auth>
+    );
+  }
 }
 
 const theme = createMuiTheme({

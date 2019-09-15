@@ -5,11 +5,17 @@ import AuthContext from '../context/AuthContext';
 
 const LOGIN_QUERY = 'query Login($email: String, $password: String) { login(email: $email, password: $password) }';
 
-function Auth({ children }) {
-  const [activeUser, setActiveUser] = useState(null);
+const LOGOUT_QUERY = 'query Logout { logout }';
+
+
+function Auth({ activeSession, children }) {
+  const [activeUser, setActiveUser] = useState(activeSession);
   const [loginFailed, setLoginFailed] = useState(false);
-  const invalidate = () => setActiveUser(null);
   const [loginQuery] = useManualQuery(LOGIN_QUERY);
+  const [logoutQuery] = useManualQuery(LOGOUT_QUERY);
+
+  const invalidate = async () => logoutQuery({}).then(() => setActiveUser(null));
+
 
   const login = async (details) => {
     const { data, error } = await loginQuery({ variables: details });
@@ -17,7 +23,7 @@ function Auth({ children }) {
       invalidate();
       setLoginFailed(true);
     } else {
-      setActiveUser('grant');
+      setActiveUser(true);
       setLoginFailed(false);
     }
   };
@@ -33,6 +39,7 @@ function Auth({ children }) {
 
 Auth.propTypes = {
   children: PropTypes.node.isRequired,
+  activeSession: PropTypes.bool.isRequired,
 };
 
 export default Auth;

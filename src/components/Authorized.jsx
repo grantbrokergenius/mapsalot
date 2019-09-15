@@ -4,8 +4,7 @@ import AuthContext from '../context/AuthContext';
 
 function Authorized({ anonymous, both, children }) {
   const { activeUser } = useContext(AuthContext);
-  const loggedIn = activeUser !== null;
-  if (loggedIn !== anonymous || both) return (<>{children}</>);
+  if (activeUser !== anonymous || both) return (<>{children}</>);
   return null;
 }
 

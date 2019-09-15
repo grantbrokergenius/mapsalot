@@ -5,6 +5,7 @@ import {
 
 import login from './login';
 import info from './info';
+import { auth } from '../../utils/authorized';
 
 const queries = {
   login: {
@@ -14,7 +15,7 @@ const queries = {
       password: { type: GraphQLString },
     },
     resolve:
-      async (v, { email, password }, ctx) => login(email, password)
+      async (_v, { email, password }, ctx) => login(email, password)
         .then((session) => {
           if (!session) {
             return false;
@@ -26,6 +27,14 @@ const queries = {
             return true;
           });
         }),
+  },
+  verify: {
+    type: GraphQLBoolean,
+    resolve: (_v, _args, ctx) => !!auth(() => true)(ctx),
+  },
+  logout: {
+    type: GraphQLBoolean,
+    resolve: (_v, _args, ctx) => { ctx.session.destroy(); return true; },
   },
 };
 
