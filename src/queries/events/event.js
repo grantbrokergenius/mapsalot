@@ -29,10 +29,10 @@ const transform = (e) => e.map((f) => ({
             ]);
         }
         */
-const markUnresolved = authWithUser((user, bg_event_id, exchange_id) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [bg_event_id, exchange_id, user.user_id]));
+const markUnresolved = authWithUser((user, bgEventId, exchangeId) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [bg_event_id, exchange_id, user.user_id]));
 
 const findEvents = ({
-  date_from = format(yesterday(), 'yyyy-MM-dd'), date_to = format(twoyears(), 'yyyy-MM-dd'), event_name = '%', venue_name = '%',
+  dateFrom = format(yesterday(), 'yyyy-MM-dd'), dateTo = format(twoyears(), 'yyyy-MM-dd'), event = '%', venue = '%',
   limit = 100, offset = 0, order = 'event_date', dir = 'asc',
 } = {}) => allowedSort.includes(order)
   && ['asc', 'desc'].includes(dir)
@@ -56,7 +56,7 @@ const findEvents = ({
     OR \`event_mappings\`.\`approved\` IS NULL
     OR \`event_mappings\`.\`exchange_id\` IS NULL
     ) ORDER BY ${order} ${dir} LIMIT ${limit} OFFSET ${offset}`,
-  [date_from, date_to, event_name, venue_name])
+  [dateFrom, dateTo, event, venue])
     .then((res) => res[0])
     .then(transform);
 
