@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
@@ -17,17 +16,17 @@ function StubHubEvent({
   hasActiveEvent,
   toggleMapDialogOpen,
   setActiveStubHubEvent,
-  stubhub_event_id, event_name, venue_name, event_date,
+  exchangeEventId, event, venue, eventDate,
 }) {
   const handleClick = () => setActiveStubHubEvent({
-    stubhub_event_id, event_name, venue_name, event_date,
+    exchangeEventId, event, venue, eventDate,
   });
 
-  const selected = getActiveStubHubEventId() === stubhub_event_id;
+  const selected = getActiveStubHubEventId() === exchangeEventId;
 
   return (
-    <ListItem selected={selected} button key={stubhub_event_id} onClick={handleClick}>
-      <ListItemText primary={event_name} secondary={`${venue_name} || ${dateformat(event_date)}`} />
+    <ListItem selected={selected} button key={exchangeEventId} onClick={handleClick}>
+      <ListItemText primary={event} secondary={`${venue} || ${dateformat(eventDate)}`} />
       <ListItemSecondaryAction>
         {hasActiveEvent()
         && (
@@ -38,7 +37,7 @@ function StubHubEvent({
           </Tooltip>
         )}
         <Tooltip title="View on StubHub">
-          <IconButton aria-label="open stubhub" onClick={() => openLink(stubhub_event_id)}>
+          <IconButton aria-label="open stubhub" onClick={() => openLink(exchangeEventId)}>
             <LaunchIcon />
           </IconButton>
         </Tooltip>
@@ -52,10 +51,10 @@ StubHubEvent.propTypes = {
   hasActiveEvent: PropTypes.func.isRequired,
   toggleMapDialogOpen: PropTypes.func.isRequired,
   setActiveStubHubEvent: PropTypes.func.isRequired,
-  stubhub_event_id: PropTypes.number.isRequired,
-  event_name: PropTypes.string.isRequired,
-  venue_name: PropTypes.string.isRequired,
-  event_date: PropTypes.string.isRequired,
+  exchangeEventId: PropTypes.number.isRequired,
+  event: PropTypes.string.isRequired,
+  venue: PropTypes.string.isRequired,
+  eventDate: PropTypes.string.isRequired,
 };
 
 export default StubHubEvent;

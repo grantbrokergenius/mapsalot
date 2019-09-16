@@ -1,12 +1,18 @@
-/* eslint-disable camelcase */
+import { format } from 'date-fns';
 import db from '../../db';
 import { auth, authWithUser } from '../../utils/authorized';
 import { yesterday, twoyears } from '../../utils/date';
-import { format } from 'date-fns';
 
 
 const allowedSort = ['event_date', 'event_name', 'venue_name'];
 
+const transform = (e) => e.map((f) => ({
+  bgEventId: f.bg_event_id,
+  event: f.event_name,
+  venue: f.venue_name,
+  eventDate: f.event_date,
+  posName: f.pos_name,
+}));
 
 /*
  $update = DB::table('unresolveable_mappings')
@@ -51,9 +57,11 @@ const findEvents = ({
     OR \`event_mappings\`.\`exchange_id\` IS NULL
     ) ORDER BY ${order} ${dir} LIMIT ${limit} OFFSET ${offset}`,
   [date_from, date_to, event_name, venue_name])
-    .then((res) => res[0]);
+    .then((res) => res[0])
+    .then(transform);
 
 const find = auth(findEvents);
+
 
 /*
 $sql = <<<SQL

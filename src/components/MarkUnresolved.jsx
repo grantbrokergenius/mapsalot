@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 import { useMutation } from 'graphql-hooks';
 import { Dialog, DialogTitle, DialogContentText, Button, DialogContent, DialogActions } from '@material-ui/core';
 
-const MARK_UNRESOLVED_MUTATION = 'mutation MarkUnresolved($bg_event_id: Int!) { markUnresolved(bg_event_id: $bg_event_id) }';
+const MARK_UNRESOLVED_MUTATION = 'mutation MarkUnresolved($bgEventId: Int!) { markUnresolved(bgEventId: $bgEventId) }';
 
 
 function MarkUnresolved({
-  bg_event_id,
+  bgEventId,
 }) {
   const [markUnresolved] = useMutation(MARK_UNRESOLVED_MUTATION);
   const [open, setOpen] = React.useState(false);
@@ -26,7 +26,7 @@ function MarkUnresolved({
 
   function handleAccept() {
     setOpen(false);
-    markUnresolved({ variables: { bg_event_id } });
+    markUnresolved({ variables: { bgEventId } });
   }
 
   return (
@@ -61,7 +61,7 @@ function MarkUnresolved({
 }
 
 MarkUnresolved.propTypes = {
-  bg_event_id: PropTypes.number.isRequired,
+  bgEventId: PropTypes.number.isRequired,
 };
 
 export default MarkUnresolved;

@@ -20,17 +20,17 @@ import SearchInput from './SearchInput';
 import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
 import { useStubHub } from '../context/StubHubContext';
 
-const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bg_event_id, event_name, venue_name, event_date } }';
+const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bgEventId, event, venue, eventDate } }';
 
 function UptickChild({ setSHSearchValues }) {
   const PER_PAGE = 100;
 
   const [offset, setOffset] = useState(0);
   const [values, setValues] = useState({
-    event_name: '',
-    venue_name: '',
-    date_from: new Date(),
-    date_to: new Date(),
+    event: '',
+    venue: '',
+    dateFrom: new Date(),
+    dateTo: new Date(),
   });
 
   const { setActiveEvent, activeEvent } = useContext(
@@ -46,7 +46,7 @@ function UptickChild({ setSHSearchValues }) {
   // const { setValues: setSHSearchValues } = useStubHubSearchValues();
   const { update: updateSHSearch } = useStubHub();
 
-  const activeEventId = activeEvent && activeEvent.bg_event_id;
+  const activeEventId = activeEvent && activeEvent.bgEventId;
 
   const { loading, error, data } = useQuery(LIST_QUERY, {
     variables: { offset },
@@ -66,10 +66,9 @@ function UptickChild({ setSHSearchValues }) {
     setActiveEvent(event);
     // if (updateSearchEnabled) {
     updateSHSearch({
-      event: event.event_name, venue: event.venue_name, dateFrom: new Date(Number(event.event_date)), dateTo: null,
+      event: event.event, venue: event.venue, dateFrom: new Date(Number(event.eventDate)), dateTo: null,
     });
-    // bumpy
-    setSHSearchValues({ event: event.event_name, venue: event.venue_name });
+    setSHSearchValues({ event: event.event, venue: event.venue });
     // }
   };
 
@@ -106,7 +105,7 @@ function UptickChild({ setSHSearchValues }) {
             id="date-from"
             label="Date from"
             value={values.date_from}
-            onChange={handleChange('date_from')}
+            onChange={handleChange('dateFrom')}
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}
@@ -119,7 +118,7 @@ function UptickChild({ setSHSearchValues }) {
             id="date-to"
             label="Date to"
             value={values.date_to}
-            onChange={handleChange('date_to')}
+            onChange={handleChange('dateTo')}
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}
@@ -133,7 +132,7 @@ function UptickChild({ setSHSearchValues }) {
           && data.list
           && data.list.map((event) => (
             <Event
-              key={event.bg_event_id}
+              key={event.bgEventId}
               activeEventId={activeEventId}
               setSelected={setSelected}
               {...event}

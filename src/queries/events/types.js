@@ -7,19 +7,19 @@ import { GraphQLInt } from 'graphql/type';
 const EventType = new GraphQLObjectType({
   name: 'Event',
   fields: {
-    bg_event_id: {
+    bgEventId: {
       type: GraphQLInt,
     },
-    event_name: {
+    event: {
       type: GraphQLString,
     },
-    venue_name: {
+    venue: {
       type: GraphQLString,
     },
-    event_date: {
+    eventDate: {
       type: GraphQLString,
     },
-    pos_name: {
+    posName: {
       type: GraphQLString,
     },
   },

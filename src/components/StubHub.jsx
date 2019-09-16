@@ -12,9 +12,9 @@ import { useStubHub } from '../context/StubHubContext';
 import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
 
 
-const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String, $venue_name: String, $dateFrom: String, $dateTo: String, $order: String) {
-   findStubHubEvents(offset: $offset, event_name: $event_name, venue_name: $venue_name, dateFrom: $dateFrom, dateTo: $dateTo, order: $order){
-      stubhub_event_id, event_name, venue_name, event_date
+const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event: String, $venue: String, $dateFrom: String, $dateTo: String, $order: String) {
+   findStubHubEvents(offset: $offset, event: $event, venue: $venue, dateFrom: $dateFrom, dateTo: $dateTo, order: $order){
+      exchangeEventId, event, venue, eventDate
     }
   }`;
 
@@ -92,13 +92,12 @@ function StubHubSearchResults() {
   } = useContext(EventContext);
 
   const { values } = useStubHub();
-  console.log(values);
 
   const { loading, error, data } = useQuery(SEARCH_QUERY, {
     variables: {
       offset: 0,
-      event_name: values.event,
-      venue_name: values.venue,
+      event: values.event,
+      venue: values.venue,
       dateFrom: values.dateFrom && format(values.dateFrom, 'yyyy-MM-dd'),
       dateTo: values.dateTo && format(values.dateTo, 'yyyy-MM-dd'),
       order: values.order,
@@ -116,7 +115,7 @@ function StubHubSearchResults() {
           activeStubHubEvent={activeStubHubEvent}
           toggleMapDialogOpen={toggleMapDialogOpen}
           setActiveStubHubEvent={setActiveStubHubEvent}
-          key={event.stubhub_event_id}
+          key={event.exchangeEventId}
           {...event}
         />
       ),

@@ -71,10 +71,10 @@ const keys = new KeyStore();
 const transform = ({
   id, name, eventDateLocal, venue,
 }) => ({
-  stubhub_event_id: id,
-  event_date: Date.parse(eventDateLocal),
-  event_name: name,
-  venue_name: `${venue.name}, ${venue.city}, ${venue.state}`,
+  exchangeEventId: id,
+  eventDate: Date.parse(eventDateLocal),
+  event: name,
+  venue: `${venue.name}, ${venue.city}, ${venue.state}`,
 });
 
 const findEvents = auth(async (fields) => fetch(`${searchUrl}?${qs(fields)}`, {

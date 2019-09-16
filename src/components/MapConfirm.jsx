@@ -65,7 +65,7 @@ function MapConfirm({
 
   const confirm = async () => {
     await mapEvent({
-      variables: { id: activeEvent.bg_event_id, stubhub: activeStubHubEvent.stubhub_event_id },
+      variables: { id: activeEvent.bgEventId, stubhub: activeStubHubEvent.exchangeEventId },
     });
     toggleMapDialogOpen();
   };
@@ -80,9 +80,9 @@ function MapConfirm({
         {activeEvent && activeStubHubEvent
     && (
       <MapTable left="Uptick" right="StubHub">
-        <Row left={activeEvent.event_name} right={activeStubHubEvent.event_name} />
-        <Row left={activeEvent.venue_name} right={activeStubHubEvent.venue_name} />
-        <Row left={dateformat(activeEvent.event_date)} right={dateformat(activeStubHubEvent.event_date)} />
+        <Row left={activeEvent.event} right={activeStubHubEvent.event} />
+        <Row left={activeEvent.venue} right={activeStubHubEvent.venue} />
+        <Row left={dateformat(activeEvent.eventDate)} right={dateformat(activeStubHubEvent.eventDate)} />
 
       </MapTable>
     )}

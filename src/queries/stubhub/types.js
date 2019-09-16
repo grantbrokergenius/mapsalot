@@ -6,16 +6,16 @@ import { GraphQLInt, GraphQLString } from 'graphql/type';
 const StubHubEventType = new GraphQLObjectType({
   name: 'StubHubEvent',
   fields: {
-    stubhub_event_id: {
+    exchangeEventId: {
       type: GraphQLInt,
     },
-    event_name: {
+    event: {
       type: GraphQLString,
     },
-    venue_name: {
+    venue: {
       type: GraphQLString,
     },
-    event_date: {
+    eventDate: {
       type: GraphQLString,
     },
   },

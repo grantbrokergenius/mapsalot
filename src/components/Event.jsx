@@ -34,21 +34,21 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Event({
-  setSelected, activeEventId, bg_event_id, event_name, venue_name, event_date,
+  setSelected, activeEventId, bgEventId, event, venue, eventDate,
 }) {
   const classes = useStyles();
 
   const handleClick = () => setSelected({
-    bg_event_id, event_name, venue_name, event_date,
+    bgEventId, event, venue, eventDate,
   });
-  const selected = activeEventId === bg_event_id;
+  const selected = activeEventId === bgEventId;
   return (
-    <ListItem selected={selected} classes={classes} button key={bg_event_id} onClick={handleClick}>
-      <ListItemText primary={event_name} secondary={`${venue_name} || ${dateformat(event_date)}`} />
+    <ListItem selected={selected} classes={classes} button key={bgEventId} onClick={handleClick}>
+      <ListItemText primary={event} secondary={`${venue} || ${dateformat(eventDate)}`} />
       {selected
       && (
       <ListItemSecondaryAction>
-        <MarkUnresolved bg_event_id={bg_event_id} />
+        <MarkUnresolved bgEventId={bgEventId} />
       </ListItemSecondaryAction>
       )}
     </ListItem>
@@ -58,10 +58,10 @@ function Event({
 Event.propTypes = {
   setSelected: PropTypes.func.isRequired,
   activeEventId: PropTypes.number,
-  bg_event_id: PropTypes.number.isRequired,
-  event_name: PropTypes.string.isRequired,
-  venue_name: PropTypes.string.isRequired,
-  event_date: PropTypes.string.isRequired,
+  bgEventId: PropTypes.number.isRequired,
+  event: PropTypes.string.isRequired,
+  venue: PropTypes.string.isRequired,
+  eventDate: PropTypes.string.isRequired,
 };
 
 Event.defaultProps = {

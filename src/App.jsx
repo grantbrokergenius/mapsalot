@@ -36,8 +36,8 @@ function App() {
   const toggleMapDialogOpen = () => setMapDialogOpen(!mapDialogOpen);
 
   const hasActiveEvent = () => !!activeEvent;
-  const getActiveEventId = () => activeEvent && activeEvent.bg_event_id;
-  const getActiveStubHubEventId = () => activeStubHubEvent && activeStubHubEvent.stubhub_event_id;
+  const getActiveEventId = () => activeEvent && activeEvent.bgEventId;
+  const getActiveStubHubEventId = () => activeStubHubEvent && activeStubHubEvent.exchangeEventId;
 
 
   const context = {

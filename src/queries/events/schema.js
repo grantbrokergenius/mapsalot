@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {
   GraphQLList, GraphQLBoolean, GraphQLString,
 } from 'graphql';
@@ -47,20 +46,21 @@ const mutations = {
   map: {
     type: GraphQLBoolean,
     args: {
-      bg_event_id: { type: GraphQLInt },
-      stubhub_event_id: { type: GraphQLInt },
+      bgEventId: { type: GraphQLInt },
+      exchangeEventId: { type: GraphQLInt },
+      exchangeId: { type: GraphQLInt },
     },
   },
   markUnresolved: {
     type: GraphQLBoolean,
     args: {
-      bg_event_id: { type: GraphQLInt },
+      bgEventId: { type: GraphQLInt },
     },
     resolve: async (
       v,
-      { bg_event_id, stubhub_event_id },
+      { bgEventId, exchangeEventId, exchangeId },
       ctx,
-    ) => Event.markUnresolved(ctx, bg_event_id, stubhub_event_id),
+    ) => Event.markUnresolved(ctx, bgEventId, exchangeEventId, exchangeId),
   },
 };
 

@@ -15,16 +15,15 @@ const queries = {
       limit: { type: GraphQLInt },
       offset: { type: GraphQLInt },
       order: { type: GraphQLString },
-      event_name: { type: GraphQLString },
-      venue_name: { type: GraphQLString },
+      event: { type: GraphQLString },
+      venue: { type: GraphQLString },
       dateFrom: { type: GraphQLString },
       dateTo: { type: GraphQLString },
     },
     resolve: async (v, {
-      // eslint-disable-next-line camelcase
-      limit, offset, order, event_name, venue_name, dateFrom, dateTo,
+      limit, offset, order, event, venue, dateFrom, dateTo,
     }, ctx) => findEvents(ctx, {
-      start: offset, rows: limit, venue: venue_name, name: event_name, sort: order, dateLocal: combineDates(dateFrom, dateTo),
+      start: offset, rows: limit, venue, name: event, sort: order, dateLocal: combineDates(dateFrom, dateTo),
     }),
   },
 };
