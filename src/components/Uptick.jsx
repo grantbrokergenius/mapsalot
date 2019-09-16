@@ -65,7 +65,9 @@ function UptickChild({ setSHSearchValues }) {
   const setSelected = (event) => {
     setActiveEvent(event);
     // if (updateSearchEnabled) {
-    updateSHSearch({ event: event.event_name, venue: event.venue_name });
+    updateSHSearch({
+      event: event.event_name, venue: event.venue_name, dateFrom: new Date(Number(event.event_date)), dateTo: null,
+    });
     // bumpy
     setSHSearchValues({ event: event.event_name, venue: event.venue_name });
     // }

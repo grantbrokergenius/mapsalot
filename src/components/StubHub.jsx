@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import { useQuery } from 'graphql-hooks';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { format } from 'date-fns';
 import EventContext from '../context/EventContext';
 import Error from './Error';
 import StubHubEvent from './StubHubEvent';
@@ -11,8 +12,8 @@ import { useStubHub } from '../context/StubHubContext';
 import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
 
 
-const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String, $venue_name: String) {
-   findStubHubEvents(offset: $offset, event_name: $event_name, venue_name: $venue_name){
+const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event_name: String, $venue_name: String, $dateFrom: String, $dateTo: String, $order: String) {
+   findStubHubEvents(offset: $offset, event_name: $event_name, venue_name: $venue_name, dateFrom: $dateFrom, dateTo: $dateTo, order: $order){
       stubhub_event_id, event_name, venue_name, event_date
     }
   }`;
@@ -53,7 +54,7 @@ function StubhubSearchFields() {
         autoOk
         disableToolbar
         variant="inline"
-        format="MM/dd/yyyy"
+        format="yyyy-MM-dd"
         margin="normal"
         id="date-from"
         label="Date from"
@@ -67,7 +68,7 @@ function StubhubSearchFields() {
         autoOk
         disableToolbar
         variant="inline"
-        format="MM/dd/yyyy"
+        format="yyyy-MM-dd"
         margin="normal"
         id="date-to"
         label="Date to"
@@ -91,9 +92,17 @@ function StubHubSearchResults() {
   } = useContext(EventContext);
 
   const { values } = useStubHub();
+  console.log(values);
 
   const { loading, error, data } = useQuery(SEARCH_QUERY, {
-    variables: { offset: 0, event_name: values.event, venue_name: values.venue },
+    variables: {
+      offset: 0,
+      event_name: values.event,
+      venue_name: values.venue,
+      dateFrom: values.dateFrom && format(values.dateFrom, 'yyyy-MM-dd'),
+      dateTo: values.dateTo && format(values.dateTo, 'yyyy-MM-dd'),
+      order: values.order,
+    },
   });
 
   if (loading) return (<CircularProgress />);

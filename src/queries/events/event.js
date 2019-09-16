@@ -2,6 +2,7 @@
 import db from '../../db';
 import { auth, authWithUser } from '../../utils/authorized';
 import { yesterday, twoyears } from '../../utils/date';
+import { format } from 'date-fns';
 
 
 const allowedSort = ['event_date', 'event_name', 'venue_name'];
@@ -24,9 +25,10 @@ const allowedSort = ['event_date', 'event_name', 'venue_name'];
         */
 const markUnresolved = authWithUser((user, bg_event_id, exchange_id) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [bg_event_id, exchange_id, user.user_id]));
 
-const find = ({
-  date_from = yesterday('yyyy-MM-dd'), date_to = twoyears('yyyy-MM-dd'), event_name = '%', venue_name = '%',
-} = {}, limit = 100, offset = 0, order = 'event_date', dir = 'asc') => allowedSort.includes(order)
+const findEvents = ({
+  date_from = format(yesterday(), 'yyyy-MM-dd'), date_to = format(twoyears(), 'yyyy-MM-dd'), event_name = '%', venue_name = '%',
+  limit = 100, offset = 0, order = 'event_date', dir = 'asc',
+} = {}) => allowedSort.includes(order)
   && ['asc', 'desc'].includes(dir)
   && db.raw(`SELECT bg_events.bg_event_id as bg_event_id, event_name, venue_name, event_date, pos_name
     FROM \`bg_events\`
@@ -51,9 +53,7 @@ const find = ({
   [date_from, date_to, event_name, venue_name])
     .then((res) => res[0]);
 
-const findSome = auth((_, ...args) => find(...args));
-
-const findAll = auth(() => find({}));
+const find = auth(findEvents);
 
 /*
 $sql = <<<SQL
@@ -92,5 +92,5 @@ SQL;
 
 
 export default {
-  findAll, findSome, markUnresolved,
+  find, markUnresolved,
 };

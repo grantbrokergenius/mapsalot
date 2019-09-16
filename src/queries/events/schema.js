@@ -15,7 +15,7 @@ const queries = {
       offset: { type: GraphQLInt },
       order: { type: GraphQLString },
     },
-    resolve: async (v, { limit, offset, order }, ctx) => Event.findAll(ctx, limit, offset, order),
+    resolve: async (v, { limit, offset, order }, ctx) => Event.find(ctx, { limit, offset, order }),
   },
   find: {
     type: GraphQLList(EventType),
@@ -31,9 +31,15 @@ const queries = {
     resolve: async (v, {
       // eslint-disable-next-line camelcase
       limit, offset, order, event_name, venue_name, date_from, date_to,
-    }, ctx) => Event.findSome(ctx, {
-      event_name, venue_name, date_from, date_to,
-    }, limit, offset, order),
+    }, ctx) => Event.find(ctx, {
+      event_name,
+      venue_name,
+      date_from,
+      date_to,
+      limit,
+      offset,
+      order,
+    }),
   },
 };
 

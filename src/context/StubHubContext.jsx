@@ -9,8 +9,9 @@ const StubHubProvider = ({ children }) => {
     {
       event: '',
       venue: '',
-      dateFrom: yesterday('MM/dd/yyyy'),
-      dateTo: twoyears('MM/dd/yyyy'),
+      dateFrom: yesterday(),
+      dateTo: twoyears(),
+      order: 'eventDateLocal asc', // date asc and id asc don't work :/
     },
   );
 
