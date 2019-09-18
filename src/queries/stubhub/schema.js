@@ -23,7 +23,12 @@ const queries = {
     resolve: async (v, {
       limit, offset, order, event, venue, dateFrom, dateTo,
     }, ctx) => findEvents(ctx, {
-      start: offset, rows: limit, venue, name: event, sort: order, dateLocal: combineDates(dateFrom, dateTo),
+      start: offset,
+      rows: limit,
+      venue,
+      name: event,
+      sort: order,
+      dateLocal: combineDates(dateFrom, dateTo),
     }),
   },
 };

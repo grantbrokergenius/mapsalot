@@ -1,9 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import { useQuery, useManualQuery } from 'graphql-hooks';
+import { useQuery } from 'graphql-hooks';
 
 import {
   CircularProgress,
@@ -14,7 +12,7 @@ import Error from './Error';
 import SearchInput from './SearchInput';
 import { useUptickSearchValues } from '../context/UptickSearchValuesContext';
 import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
-import { UptickProvider, useUptick } from '../context/UptickContext';
+import { useUptick } from '../context/UptickContext';
 import { useStubHub } from '../context/StubHubContext';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bgEventId, event, venue, eventDate } }';
@@ -129,15 +127,6 @@ function UptickChild({ setSHSearchValues }) {
   );
 
   const activeEventId = activeEvent && activeEvent.bgEventId;
-
-
-  // const { useMapQuery } = useManualQuery(MAP_QUERY);
-
-
-  const handleChangeEvent = (name) => (value) => {
-    handleChange(name)(value);
-  };
-
 
   return (
     <>
