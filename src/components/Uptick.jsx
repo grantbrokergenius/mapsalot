@@ -10,18 +10,12 @@ import Event from './Event';
 import EventContext from '../context/EventContext';
 import Error from './Error';
 import SearchInput from './SearchInput';
-import { useUptickSearchValues } from '../context/UptickSearchValuesContext';
-import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
 import { useUptick } from '../context/UptickContext';
 import { useStubHub } from '../context/StubHubContext';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bgEventId, event, venue, eventDate } }';
 
 function UptickSearchFields() {
-  const {
-    values,
-    updateInputValue,
-  } = useUptickSearchValues();
 
   const { values: uptickValues, updateSearchValue } = useUptick();
 
@@ -29,15 +23,13 @@ function UptickSearchFields() {
     <>
       <SearchInput
         label="Event Name"
-        value={values.event}
-        onChange={updateInputValue('event')}
+        value={uptickValues.event}
         delayedChange={updateSearchValue('event')}
         delay={200}
       />
       <SearchInput
         label="Venue"
-        value={values.venue}
-        onChange={updateInputValue('venue')}
+        value={uptickValues.venue}
         delayedChange={updateSearchValue('venue')}
         delay={200}
       />
@@ -74,7 +66,7 @@ function UptickSearchFields() {
 }
 
 function UptickResults({
-  offset, activeEventId, setActiveEvent, setSHSearchValues,
+  offset, activeEventId, setActiveEvent,
 }) {
   const { update: updateSHSearch } = useStubHub();
 
@@ -86,7 +78,6 @@ function UptickResults({
     updateSHSearch({
       event: event.event, venue: event.venue, dateFrom: new Date(Number(event.eventDate)), dateTo: null,
     });
-    setSHSearchValues({ event: event.event, venue: event.venue });
     // }
   };
 
@@ -116,7 +107,7 @@ function UptickResults({
   );
 }
 
-function UptickChild({ setSHSearchValues }) {
+export default function Uptick() {
   const PER_PAGE = 100;
 
   const [offset, setOffset] = useState(0);
@@ -135,7 +126,6 @@ function UptickChild({ setSHSearchValues }) {
         offset={offset}
         activeEventId={activeEventId}
         setActiveEvent={setActiveEvent}
-        setSHSearchValues={setSHSearchValues}
       />
       <div style={{ flexFlow: '0 1 140px' }}>
         <Button
@@ -156,11 +146,4 @@ function UptickChild({ setSHSearchValues }) {
       </div>
     </>
   );
-}
-
-export default function Uptick() {
-  const { setValues: setSHSearchValues } = useStubHubSearchValues();
-  return React.useMemo(() => (
-    <UptickChild setSHSearchValues={setSHSearchValues} />
-  ), [setSHSearchValues]);
 }

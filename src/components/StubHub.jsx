@@ -9,8 +9,6 @@ import Error from './Error';
 import StubHubEvent from './StubHubEvent';
 import SearchInput from './SearchInput';
 import { useStubHub } from '../context/StubHubContext';
-import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
-
 
 const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event: String, $venue: String, $dateFrom: String, $dateTo: String, $order: String) {
    findStubHubEvents(offset: $offset, event: $event, venue: $venue, dateFrom: $dateFrom, dateTo: $dateTo, order: $order){
@@ -19,10 +17,6 @@ const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event: String, $ven
   }`;
 
 function StubhubSearchFields() {
-  const {
-    values,
-    updateInputValue,
-  } = useStubHubSearchValues();
 
   const { values: shValues, updateSearchValue } = useStubHub();
 
@@ -38,15 +32,13 @@ function StubhubSearchFields() {
       /> */ }
       <SearchInput
         label="Event Name"
-        value={values.event}
-        onChange={updateInputValue('event')}
+        value={shValues.event}
         delayedChange={updateSearchValue('event')}
         delay={200}
       />
       <SearchInput
         label="Venue"
-        value={values.venue}
-        onChange={updateInputValue('venue')}
+        value={shValues.venue}
         delayedChange={updateSearchValue('venue')}
         delay={200}
       />
