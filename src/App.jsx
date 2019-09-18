@@ -17,6 +17,8 @@ import Uptick from './components/Uptick';
 import EventContext from './context/EventContext';
 import { StubHubProvider } from './context/StubHubContext';
 import { StubHubSearchValuesProvider } from './context/StubHubSearchValuesContext';
+import { UptickProvider } from './context/UptickContext';
+import { UptickSearchValuesProvider } from './context/UptickSearchValuesContext';
 
 
 const client = new GraphQLClient({
@@ -81,7 +83,11 @@ function App() {
                 <Grid container style={{ height: 'calc(100% - 114px)' }}>
                   <Grid item style={{ height: '100%', width: '50%' }}>
                     <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
-                      <Uptick />
+                      <UptickSearchValuesProvider>
+                        <UptickProvider>
+                          <Uptick />
+                        </UptickProvider>
+                      </UptickSearchValuesProvider>
                     </Paper>
                   </Grid>
 

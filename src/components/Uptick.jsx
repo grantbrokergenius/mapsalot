@@ -6,61 +6,81 @@ import { KeyboardDatePicker } from '@material-ui/pickers';
 import { useQuery, useManualQuery } from 'graphql-hooks';
 
 import {
-  Typography,
   CircularProgress,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Event from './Event';
 import EventContext from '../context/EventContext';
 import Error from './Error';
 import SearchInput from './SearchInput';
+import { useUptickSearchValues } from '../context/UptickSearchValuesContext';
 import { useStubHubSearchValues } from '../context/StubHubSearchValuesContext';
+import { UptickProvider, useUptick } from '../context/UptickContext';
 import { useStubHub } from '../context/StubHubContext';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bgEventId, event, venue, eventDate } }';
 
-function UptickChild({ setSHSearchValues }) {
-  const PER_PAGE = 100;
+function UptickSearchFields() {
+  const {
+    values,
+    updateInputValue,
+  } = useUptickSearchValues();
 
-  const [offset, setOffset] = useState(0);
-  const [values, setValues] = useState({
-    event: '',
-    venue: '',
-    dateFrom: new Date(),
-    dateTo: new Date(),
-  });
+  const { values: uptickValues, updateSearchValue } = useUptick();
 
-  const { setActiveEvent, activeEvent } = useContext(
-    EventContext,
+  return (
+    <>
+      <SearchInput
+        label="Event Name"
+        value={values.event}
+        onChange={updateInputValue('event')}
+        delayedChange={updateSearchValue('event')}
+        delay={200}
+      />
+      <SearchInput
+        label="Venue"
+        value={values.venue}
+        onChange={updateInputValue('venue')}
+        delayedChange={updateSearchValue('venue')}
+        delay={200}
+      />
+      <KeyboardDatePicker
+        autoOk
+        disableToolbar
+        variant="inline"
+        format="yyyy-MM-dd"
+        margin="normal"
+        id="date-from"
+        label="Date from"
+        value={uptickValues.dateFrom}
+        onChange={updateSearchValue('dateFrom')}
+        KeyboardButtonProps={{
+          'aria-label': 'change date',
+        }}
+      />
+      <KeyboardDatePicker
+        autoOk
+        disableToolbar
+        variant="inline"
+        format="yyyy-MM-dd"
+        margin="normal"
+        id="date-to"
+        label="Date to"
+        value={uptickValues.dateTo}
+        onChange={updateSearchValue('dateTo')}
+        KeyboardButtonProps={{
+          'aria-label': 'change date',
+        }}
+      />
+    </>
   );
+}
 
-
-  /*
-  const MyWrapper = (props) => { const ctx = useContext(Ctx); return React.useMemo(() =>
-    <ActualComponent {...props} ctx={ctx} />, [props, ctx]) }
-  */
-  // bumpy:
-  // const { setValues: setSHSearchValues } = useStubHubSearchValues();
+function UptickResults({
+  offset, activeEventId, setActiveEvent, setSHSearchValues,
+}) {
   const { update: updateSHSearch } = useStubHub();
 
-  const activeEventId = activeEvent && activeEvent.bgEventId;
-
-  const { loading, error, data } = useQuery(LIST_QUERY, {
-    variables: { offset },
-  });
-
-  // const { useMapQuery } = useManualQuery(MAP_QUERY);
-
-  const handleChange = (name) => (value) => {
-    setValues({ ...values, [name]: value });
-  };
-
-  const handleChangeEvent = (name) => (value) => {
-    handleChange(name)(value);
-  };
+  const { values } = useUptick();
 
   const setSelected = (event) => {
     setActiveEvent(event);
@@ -72,73 +92,62 @@ function UptickChild({ setSHSearchValues }) {
     // }
   };
 
+  const { loading, error, data } = useQuery(LIST_QUERY, {
+    variables: {
+      offset,
+      event: values.event,
+      venue: values.venue,
+    },
+  });
+
+  return (
+    <div style={{ flexFlow: '1 0 auto', overflow: 'auto' }}>
+      {loading && <CircularProgress />}
+      {error && <Error />}
+      {data
+    && data.list
+    && data.list.map((event) => (
+      <Event
+        key={event.bgEventId}
+        activeEventId={activeEventId}
+        setSelected={setSelected}
+        {...event}
+      />
+    ))}
+    </div>
+  );
+}
+
+function UptickChild({ setSHSearchValues }) {
+  const PER_PAGE = 100;
+
+  const [offset, setOffset] = useState(0);
+
+
+  const { setActiveEvent, activeEvent } = useContext(
+    EventContext,
+  );
+
+  const activeEventId = activeEvent && activeEvent.bgEventId;
+
+
+  // const { useMapQuery } = useManualQuery(MAP_QUERY);
+
+
+  const handleChangeEvent = (name) => (value) => {
+    handleChange(name)(value);
+  };
+
 
   return (
     <>
-      <ExpansionPanel>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          {/* <SearchInput
-            label="Event Name"
-            value={values.event_name}
-            onChange={handleChangeEvent('event_name')}
-            onChangeDelayed={handleChangeDelayed('event_name')}
-            delay={1000}
-            />
-          <SearchInput
-            label="Venue Name"
-            value={values.venue_name}
-            onChange={handleChangeEvent('venue_name')}
-            onChangeDelayed={handleChangeDelayed('venue_name')}
-            delay={1000}
-          /> */}
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="MM/dd/yyyy"
-            margin="normal"
-            id="date-from"
-            label="Date from"
-            value={values.date_from}
-            onChange={handleChange('dateFrom')}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="MM/dd/yyyy"
-            margin="normal"
-            id="date-to"
-            label="Date to"
-            value={values.date_to}
-            onChange={handleChange('dateTo')}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <div style={{ flexFlow: '1 0 auto', overflow: 'auto' }}>
-        {loading && <CircularProgress />}
-        {error && <Error />}
-        {data
-          && data.list
-          && data.list.map((event) => (
-            <Event
-              key={event.bgEventId}
-              activeEventId={activeEventId}
-              setSelected={setSelected}
-              {...event}
-            />
-          ))}
-      </div>
+      <UptickSearchFields />
+      <UptickResults
+        offset={offset}
+        activeEventId={activeEventId}
+        setActiveEvent={setActiveEvent}
+        setSHSearchValues={setSHSearchValues}
+      />
       <div style={{ flexFlow: '0 1 140px' }}>
         <Button
           variant="contained"
