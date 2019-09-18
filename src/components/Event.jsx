@@ -5,6 +5,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
+import FlagIcon from '@material-ui/icons/Flag';
+
+import { Tooltip, IconButton } from '@material-ui/core';
 import { dateformat } from '../utils/date';
 import MarkUnresolved from './MarkUnresolved';
 
@@ -33,8 +36,18 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+function Flagged() {
+  return (
+    <Tooltip title="Event has been flagged">
+      <IconButton aria-label="flagged">
+        <FlagIcon />
+      </IconButton>
+    </Tooltip>
+  );
+}
+
 function Event({
-  setSelected, activeEventId, bgEventId, event, venue, eventDate,
+  setSelected, activeEventId, bgEventId, event, venue, eventDate, flagged,
 }) {
   const classes = useStyles();
 
@@ -44,7 +57,15 @@ function Event({
   const selected = activeEventId === bgEventId;
   return (
     <ListItem selected={selected} classes={classes} button key={bgEventId} onClick={handleClick}>
-      <ListItemText primary={event} secondary={`${venue} || ${dateformat(eventDate)}`} />
+      <ListItemText
+        primary={(
+          <>
+            {event}
+            {flagged && <Flagged />}
+          </>
+)}
+        secondary={`${venue} || ${dateformat(eventDate)}`}
+      />
       {selected
       && (
       <ListItemSecondaryAction>
@@ -62,6 +83,7 @@ Event.propTypes = {
   event: PropTypes.string.isRequired,
   venue: PropTypes.string.isRequired,
   eventDate: PropTypes.string.isRequired,
+  flagged: PropTypes.bool.isRequired,
 };
 
 Event.defaultProps = {

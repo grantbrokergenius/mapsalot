@@ -12,6 +12,7 @@ const transform = (e) => e.map((f) => ({
   venue: f.venue_name,
   eventDate: f.event_date,
   posName: f.pos_name,
+  flagged: f.flagged === 1,
 }));
 
 /*
@@ -29,14 +30,14 @@ const transform = (e) => e.map((f) => ({
             ]);
         }
         */
-const markUnresolved = authWithUser((user, bgEventId, exchangeId) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [bg_event_id, exchange_id, user.user_id]));
+const markUnresolved = authWithUser((user, bgEventId, exchangeId) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [bgEventId, exchangeId, user.user_id]));
 
 const findEvents = ({
   dateFrom = format(yesterday(), 'yyyy-MM-dd'), dateTo = format(twoyears(), 'yyyy-MM-dd'), event = '%', venue = '%',
   limit = 100, offset = 0, order = 'event_date', dir = 'asc',
 } = {}) => allowedSort.includes(order)
   && ['asc', 'desc'].includes(dir)
-  && db.raw(`SELECT bg_events.bg_event_id as bg_event_id, event_name, venue_name, event_date, pos_name
+  && db.raw(`SELECT bg_events.bg_event_id as bg_event_id, event_name, venue_name, event_date, pos_name, \`event_mapping_flags\`.\`bg_event_id\` is not null as flagged
     FROM \`bg_events\`
     LEFT JOIN \`event_mapping_flags\`
     ON \`bg_events\`.\`bg_event_id\` = \`event_mapping_flags\`.\`bg_event_id\`

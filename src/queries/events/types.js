@@ -2,7 +2,7 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
-import { GraphQLInt } from 'graphql/type';
+import { GraphQLInt, GraphQLBoolean } from 'graphql/type';
 
 const EventType = new GraphQLObjectType({
   name: 'Event',
@@ -21,6 +21,9 @@ const EventType = new GraphQLObjectType({
     },
     posName: {
       type: GraphQLString,
+    },
+    flagged: {
+      type: GraphQLBoolean,
     },
   },
 });
