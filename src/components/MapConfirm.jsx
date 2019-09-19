@@ -10,8 +10,11 @@ import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import { Grid, Typography } from '@material-ui/core';
 import { useMutation } from 'graphql-hooks';
 import { dateformat } from '../utils/date';
+import { useExchange } from '../context/ExchangeContext';
 
-const MAP_EVENT_MUTATION = 'mutation Map(id: String!, exchange: Int!) { mapEvent(id: $id, exchange: $exchangeId) { ok } }';
+const MAP_EVENT_MUTATION = `mutation Map($bgEventId: Int!, $exchangeId: Int!, $exchangeEventId: Int!) {
+  map(bgEventId: $bgEventId, exchangeId: $exchangeId, exchangeEventId: $exchangeEventId)
+  }`;
 
 function MapTable({ left, right, children }) {
   return (
@@ -62,10 +65,11 @@ function MapConfirm({
   toggleMapDialogOpen, mapDialogOpen, activeEvent, activeExchangeEvent,
 }) {
   const [mapEvent] = useMutation(MAP_EVENT_MUTATION);
+  const { values } = useExchange();
 
   const confirm = async () => {
     await mapEvent({
-      variables: { id: activeEvent.bgEventId, exchangeId: activeExchangeEvent.exchangeEventId },
+      variables: { bgEventId: activeEvent.bgEventId, exchangeId: values.exchangeId, exchangeEventId: activeExchangeEvent.exchangeEventId },
     });
     toggleMapDialogOpen();
   };

@@ -50,17 +50,23 @@ const mutations = {
       exchangeEventId: { type: GraphQLInt },
       exchangeId: { type: GraphQLInt },
     },
+    resolve: async (
+      v,
+      { bgEventId, exchangeEventId, exchangeId },
+      ctx,
+    ) => Event.map(ctx, bgEventId, exchangeEventId, exchangeId),
   },
   markUnresolved: {
     type: GraphQLBoolean,
     args: {
       bgEventId: { type: GraphQLInt },
+      exchangeId: { type: GraphQLInt },
     },
     resolve: async (
       v,
-      { bgEventId, exchangeEventId, exchangeId },
+      { bgEventId, exchangeId },
       ctx,
-    ) => Event.markUnresolved(ctx, bgEventId, exchangeEventId, exchangeId),
+    ) => Event.markUnresolved(ctx, bgEventId, exchangeId),
   },
 };
 

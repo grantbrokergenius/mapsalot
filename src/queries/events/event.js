@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import db from '../../db';
 import { auth, authWithUser } from '../../utils/authorized';
 import { yesterday, twoyears } from '../../utils/date';
+import logger from '../../utils/logger';
 
 
 const allowedSort = ['event_date', 'event_name', 'venue_name'];
@@ -30,7 +31,28 @@ const transform = (e) => e.map((f) => ({
             ]);
         }
         */
-const markUnresolved = authWithUser((user, bgEventId, exchangeId) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [bgEventId, exchangeId, user.user_id]));
+
+const deleteEventMappingFlagsEntry = (trx, bgEventId) => trx('event_mapping_flags').where('bg_event_id', '=', bgEventId).delete();
+
+const updateExchangeEventId = (trx, bgEventId, exchangeEventId, exchangeId) => trx.raw(`INSERT INTO event_mappings
+  (bg_event_id, exchange_id, exchange_event_id, mapping_source, updated_at, approved)
+  VALUES (?, ?, ?, 'mapper', NOW(), 1)
+  ON DUPLICATE KEY
+  UPDATE exchange_event_id = ?, mapping_source = 'mapper', updated_at = NOW(), approved = 1`,
+[bgEventId, exchangeId, exchangeEventId, exchangeEventId]);
+
+const updateStubhubEventId = (trx, bgEventId, exchangeEventId) => trx('bg_events').where('bg_event_id', '=', bgEventId).update({ stubhub_event_id: exchangeEventId });
+
+const map = authWithUser(
+  (user, bgEventId, exchangeEventId, exchangeId) => db.transaction((trx) => updateExchangeEventId(trx, bgEventId, exchangeEventId, exchangeId)
+    .then(() => deleteEventMappingFlagsEntry(trx, bgEventId))
+    .then(() => exchangeId === 1 && updateStubhubEventId(trx, bgEventId, exchangeEventId))
+    .then(() => logger.info(`user ${user.email} mapped bg_event_id: ${bgEventId}, exchange_id: ${exchangeId}, exchange_event_id: ${exchangeEventId}`))
+    .then(() => true)),
+);
+
+const markUnresolved = authWithUser((user, bgEventId, exchangeId) => db.raw('INSERT INTO unresolveable_mappings (bg_event_id, exchange_id, declared_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()', [bgEventId, exchangeId, user.user_id])
+  .then((res) => logger.info(`user ${user.email} marked unresolveable bg_event_id: ${bgEventId}, exchange_id: ${exchangeId}`) && res));
 
 const findEvents = ({
   dateFrom = format(yesterday(), 'yyyy-MM-dd'), dateTo = format(twoyears(), 'yyyy-MM-dd'), event = '%', venue = '%',
@@ -101,5 +123,5 @@ SQL;
 
 
 export default {
-  find, markUnresolved,
+  find, markUnresolved, map,
 };

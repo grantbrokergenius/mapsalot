@@ -8,8 +8,6 @@ export default React.createContext({
   getActiveEventId: () => {},
   setActiveExchangeEvent: () => {},
   getActiveExchangeEventId: () => {},
-  ExchangeSearchEvent: '',
-  ExchangeSearchVenue: '',
   updateSearchEnabled: true,
   toggleUpdateSearchEnabled: () => {},
   updateSearch: () => {},
