@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,12 +7,23 @@ import {
 } from '@material-ui/core';
 import Exchanges from './Exchanges';
 import Logout from './Logout';
+import EventContext from '../context/EventContext';
 
 const useStyles = makeStyles(() => ({
   root: {
     justifyContent: 'space-between',
   },
 }));
+
+function SearchToggle() {
+  const { toggleUpdateSearchEnabled, updateSearchEnabled } = useContext(EventContext);
+  return (
+    <FormControlLabel
+      control={<Switch checked={updateSearchEnabled} onChange={toggleUpdateSearchEnabled} value="updateSearchEnabled" />}
+      label="Update search when clicking events"
+    />
+  );
+}
 
 export default function Header() {
   const classes = useStyles();
@@ -21,12 +32,7 @@ export default function Header() {
     <AppBar position="relative" color="primary">
       <Toolbar className={classes.root}>
         <img alt="mapsalot" src="Spamalot.jpg" />
-        <FormControlLabel
-          control={
-            <Switch value="updateSearchEnabled" />
-        }
-          label="Update search when clicking events"
-        />
+        <SearchToggle />
         <Exchanges />
         <Logout />
       </Toolbar>

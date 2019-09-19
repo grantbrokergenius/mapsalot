@@ -68,16 +68,20 @@ function UptickResults({
   offset, activeEventId, setActiveEvent,
 }) {
   const { update: updateSHSearch } = useStubHub();
+  const { updateSearchEnabled } = useContext(EventContext);
 
   const { values } = useUptick();
 
   const setSelected = (event) => {
     setActiveEvent(event);
-    // if (updateSearchEnabled) {
-    updateSHSearch({
-      event: event.event, venue: event.venue, dateFrom: new Date(Number(event.eventDate)), dateTo: null,
-    });
-    // }
+    if (updateSearchEnabled) {
+      updateSHSearch({
+        event: event.event,
+        venue: event.venue,
+        dateFrom: new Date(Number(event.eventDate)),
+        dateTo: null,
+      });
+    }
   };
 
   const { loading, error, data } = useQuery(LIST_QUERY, {

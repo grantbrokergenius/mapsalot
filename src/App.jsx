@@ -32,6 +32,7 @@ function App() {
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeStubHubEvent, setActiveStubHubEvent] = useState(null);
   const [mapDialogOpen, setMapDialogOpen] = useState(false);
+  const [updateSearchEnabled, setUpdateSearchEnabled] = useState(true);
 
   const toggleMapDialogOpen = () => setMapDialogOpen(!mapDialogOpen);
 
@@ -39,6 +40,7 @@ function App() {
   const getActiveEventId = () => activeEvent && activeEvent.bgEventId;
   const getActiveStubHubEventId = () => activeStubHubEvent && activeStubHubEvent.exchangeEventId;
 
+  const toggleUpdateSearchEnabled = () => setUpdateSearchEnabled(!updateSearchEnabled);
 
   const context = {
     activeEvent,
@@ -50,6 +52,8 @@ function App() {
     getActiveStubHubEventId,
     mapDialogOpen,
     toggleMapDialogOpen,
+    updateSearchEnabled,
+    toggleUpdateSearchEnabled,
   };
 
   if (vLoading || vError) return (<></>);
