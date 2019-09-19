@@ -13,10 +13,9 @@ import SearchInput from './SearchInput';
 import { useUptick } from '../context/UptickContext';
 import { useStubHub } from '../context/StubHubContext';
 
-const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bgEventId, event, venue, eventDate } }';
+const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bgEventId, event, venue, eventDate, flagged } }';
 
 function UptickSearchFields() {
-
   const { values: uptickValues, updateSearchValue } = useUptick();
 
   return (
@@ -113,9 +112,7 @@ export default function Uptick() {
   const [offset, setOffset] = useState(0);
 
 
-  const { setActiveEvent, activeEvent } = useContext(
-    EventContext,
-  );
+  const { setActiveEvent, activeEvent } = useContext(EventContext);
 
   const activeEventId = activeEvent && activeEvent.bgEventId;
 

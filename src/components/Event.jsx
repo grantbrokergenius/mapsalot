@@ -39,9 +39,7 @@ const useStyles = makeStyles(() => ({
 function Flagged() {
   return (
     <Tooltip title="Event has been flagged">
-      <IconButton aria-label="flagged">
-        <FlagIcon />
-      </IconButton>
+      <FlagIcon />
     </Tooltip>
   );
 }
