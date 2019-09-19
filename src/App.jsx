@@ -27,7 +27,7 @@ const client = new GraphQLClient({
 const VERIFY_QUERY = 'query Verify { verify }';
 
 function App() {
-  const { loading: vLoading, error: vError, data: vData } = useQuery(VERIFY_QUERY);
+  const { loading: vLoading, data: vData } = useQuery(VERIFY_QUERY);
 
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeExchangeEvent, setActiveExchangeEvent] = useState(null);
@@ -56,10 +56,10 @@ function App() {
     toggleUpdateSearchEnabled,
   };
 
-  if (vLoading || vError) return (<></>);
+  if (vLoading) return (<></>);
   if (vData) {
     return (
-      <Auth activeSession={vData.verify}>
+      <Auth activeSession={!!vData.verify}>
         <Authorized anonymous>
           <Login />
         </Authorized>
