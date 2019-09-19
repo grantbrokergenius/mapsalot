@@ -7,6 +7,8 @@ import logger from '../../utils/logger';
 
 const allowedSort = ['event_date', 'event_name', 'venue_name'];
 
+const wildcard = (str) => `%${str.replace(' ', '%')}%`;
+
 const transform = (e) => e.map((f) => ({
   bgEventId: f.bg_event_id,
   event: f.event_name,
@@ -79,7 +81,7 @@ const findEvents = ({
     OR \`event_mappings\`.\`approved\` IS NULL
     OR \`event_mappings\`.\`exchange_id\` IS NULL
     ) ORDER BY ${order} ${dir} LIMIT ${limit} OFFSET ${offset}`,
-  [dateFrom, dateTo, event, venue])
+  [dateFrom, dateTo, wildcard(event), wildcard(venue)])
     .then((res) => res[0])
     .then(transform);
 

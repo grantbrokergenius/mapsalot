@@ -13,8 +13,11 @@ import Error from './Error';
 import SearchInput from './SearchInput';
 import { useUptick } from '../context/UptickContext';
 import { useExchange } from '../context/ExchangeContext';
+import { format } from 'date-fns';
 
-const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bgEventId, event, venue, eventDate, flagged } }';
+const FIND_QUERY = `query Find($offset: Int, $event: String, $venue: String, $dateFrom: String, $dateTo: String) {
+   find(offset: $offset, event: $event, venue: $venue, dateFrom: $dateFrom, dateTo: $dateTo){ bgEventId, event, venue, eventDate, flagged }
+}`;
 
 function UptickSearchFields() {
   const { values: uptickValues, updateSearchValue } = useUptick();
@@ -85,11 +88,13 @@ function UptickResults({
     }
   };
 
-  const { loading, error, data } = useQuery(LIST_QUERY, {
+  const { loading, error, data } = useQuery(FIND_QUERY, {
     variables: {
       offset,
       event: values.event,
       venue: values.venue,
+      dateFrom: values.dateFrom && format(values.dateFrom, 'yyyy-MM-dd'),
+      dateTo: values.dateTo && format(values.dateTo, 'yyyy-MM-dd'),
     },
   });
 
@@ -98,8 +103,8 @@ function UptickResults({
       {loading && <CircularProgress />}
       {error && <Error />}
       {data
-    && data.list
-    && data.list.map((event) => (
+    && data.find
+    && data.find.map((event) => (
       <Event
         key={event.bgEventId}
         activeEventId={activeEventId}
