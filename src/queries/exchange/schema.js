@@ -12,6 +12,7 @@ const queries = {
   findExchangeEvents: {
     type: GraphQLList(ExchangeEventType),
     args: {
+      exchangeId: { type: GraphQLInt },
       limit: { type: GraphQLInt },
       offset: { type: GraphQLInt },
       order: { type: GraphQLString },

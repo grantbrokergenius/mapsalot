@@ -82,7 +82,7 @@ function App() {
 
 
               <Grid container style={{ height: 'calc(100vh - 214px)' }}>
-                <Grid item style={{width: '50%', overflow: 'auto' }}>
+                <Grid item style={{ width: '50%', overflow: 'auto' }}>
                   <Paper className="uptick">
                     <UptickProvider>
                       <Uptick />

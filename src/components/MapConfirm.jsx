@@ -82,7 +82,10 @@ function MapConfirm({
       <MapTable left="Uptick" right="Exchange">
         <Row left={activeEvent.event} right={activeExchangeEvent.event} />
         <Row left={activeEvent.venue} right={activeExchangeEvent.venue} />
-        <Row left={dateformat(activeEvent.eventDate)} right={dateformat(activeExchangeEvent.eventDate)} />
+        <Row
+          left={dateformat(activeEvent.eventDate)}
+          right={dateformat(activeExchangeEvent.eventDate)}
+        />
 
       </MapTable>
     )}

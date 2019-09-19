@@ -11,7 +11,8 @@ const ExchangeProvider = ({ children }) => {
       venue: '',
       dateFrom: yesterday(),
       dateTo: twoyears(),
-      order: 'eventDateLocal asc', // date asc and id asc don't work :/
+      order: 'eventDateLocal asc',
+      exchangeId: 1,
     },
   );
 
@@ -35,8 +36,11 @@ const useExchange = () => {
     ...newValues,
   });
 
+  const updateExchangeId = (exchangeId) => update({ exchangeId });
+
   return {
     updateSearchValue,
+    updateExchangeId,
     update,
     values,
   };

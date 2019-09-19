@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Select, MenuItem, FormControl, InputLabel,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useExchange } from '../context/ExchangeContext';
 
 const exchanges = [
   { id: 1, exchange: 'StubHub' },
@@ -13,6 +14,7 @@ const exchanges = [
 const useStyles = makeStyles(() => ({
 
   root: {
+    width: '200px',
   },
   exchangeSelect: {
     color: 'rgb(255,255,255)',
@@ -30,17 +32,17 @@ const useStyles = makeStyles(() => ({
 
 function Exchanges() {
   const classes = useStyles();
-  const [activeExchange, setActiveExchange] = React.useState(exchanges[0] && exchanges[0].id);
+  const { values, updateExchangeId } = useExchange();
 
   function handleChange(event) {
-    setActiveExchange(event.target.value);
+    updateExchangeId(event.target.value);
   }
-  return (
+  return useMemo(() => (
     <FormControl className={classes.root}>
       <InputLabel className={classes.inputLabel} htmlFor="age-simple">Exchange</InputLabel>
       <Select
         className={classes.exchangeSelect}
-        value={activeExchange}
+        value={values.exchangeId}
         onChange={handleChange}
         inputProps={{
           name: 'exchange',
@@ -54,7 +56,7 @@ function Exchanges() {
         ))}
       </Select>
     </FormControl>
-  );
+  ), [values.exchangeId]);
 }
 
 export default Exchanges;

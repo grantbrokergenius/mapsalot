@@ -10,8 +10,8 @@ import ExchangeEvent from './ExchangeEvent';
 import SearchInput from './SearchInput';
 import { useExchange } from '../context/ExchangeContext';
 
-const SEARCH_QUERY = `query findExchangeEvents($offset: Int, $event: String, $venue: String, $dateFrom: String, $dateTo: String, $order: String) {
-   findExchangeEvents(offset: $offset, event: $event, venue: $venue, dateFrom: $dateFrom, dateTo: $dateTo, order: $order){
+const SEARCH_QUERY = `query findExchangeEvents($exchangeId: Int, $offset: Int, $event: String, $venue: String, $dateFrom: String, $dateTo: String, $order: String) {
+   findExchangeEvents(exchangeId: $exchangeId, offset: $offset, event: $event, venue: $venue, dateFrom: $dateFrom, dateTo: $dateTo, order: $order){
       exchangeEventId, event, venue, eventDate
     }
   }`;
@@ -79,6 +79,7 @@ function ExchangeSearchResults() {
 
   const { loading, error, data } = useQuery(SEARCH_QUERY, {
     variables: {
+      exchangeId: values.exchangeId,
       offset: 0,
       event: values.event,
       venue: values.venue,
