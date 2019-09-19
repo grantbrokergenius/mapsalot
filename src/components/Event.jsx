@@ -6,8 +6,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 import FlagIcon from '@material-ui/icons/Flag';
-
-import { Tooltip, IconButton } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import { dateformat } from '../utils/date';
 import MarkUnresolved from './MarkUnresolved';
 

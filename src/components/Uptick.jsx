@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import { useQuery } from 'graphql-hooks';
@@ -103,12 +104,22 @@ function UptickResults({
         key={event.bgEventId}
         activeEventId={activeEventId}
         setSelected={setSelected}
-        {...event}
+        bgEventId={event.bgEventId}
+        event={event.event}
+        venue={event.venue}
+        eventDate={event.eventDate}
+        flagged={event.flagged}
       />
     ))}
     </div>
   );
 }
+
+UptickResults.propTypes = {
+  offset: PropTypes.number.isRequired,
+  activeEventId: PropTypes.number.isRequired,
+  setActiveEvent: PropTypes.func.isRequired,
+};
 
 export default function Uptick() {
   const PER_PAGE = 100;

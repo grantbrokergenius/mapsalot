@@ -17,19 +17,11 @@ const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event: String, $ven
   }`;
 
 function StubhubSearchFields() {
-
   const { values: shValues, updateSearchValue } = useStubHub();
 
 
   return (
     <>
-      {/* <FormControlLabel
-        control={
-          <Switch checked={updateSearchEnabled}
-            onChange={toggleUpdateSearchEnabled} value="updateSearchEnabled" />
-        }
-        label="Update search when clicking events"
-      /> */ }
       <SearchInput
         label="Event Name"
         value={shValues.event}
