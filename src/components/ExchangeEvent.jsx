@@ -9,7 +9,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import { dateformat } from '../utils/date';
 
-const openLink = (id) => window.open(`https://Exchange.com/event/${id}`, '_blank');
+const openLink = (id) => window.open(`https://stubhub.com/event/${id}`, '_blank');
 
 function ExchangeEvent({
   getActiveExchangeEventId,
