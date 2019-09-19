@@ -11,7 +11,7 @@ import { Grid, Typography } from '@material-ui/core';
 import { useMutation } from 'graphql-hooks';
 import { dateformat } from '../utils/date';
 
-const MAP_EVENT_MUTATION = 'mutation Map(id: String!, stubhub: Int!) { mapEvent(id: $id, stubhub: $stubhub) { ok } }';
+const MAP_EVENT_MUTATION = 'mutation Map(id: String!, exchange: Int!) { mapEvent(id: $id, exchange: $exchangeId) { ok } }';
 
 function MapTable({ left, right, children }) {
   return (
@@ -59,13 +59,13 @@ Row.propTypes = {
 };
 
 function MapConfirm({
-  toggleMapDialogOpen, mapDialogOpen, activeEvent, activeStubHubEvent,
+  toggleMapDialogOpen, mapDialogOpen, activeEvent, activeExchangeEvent,
 }) {
   const [mapEvent] = useMutation(MAP_EVENT_MUTATION);
 
   const confirm = async () => {
     await mapEvent({
-      variables: { id: activeEvent.bgEventId, stubhub: activeStubHubEvent.exchangeEventId },
+      variables: { id: activeEvent.bgEventId, exchangeId: activeExchangeEvent.exchangeEventId },
     });
     toggleMapDialogOpen();
   };
@@ -77,12 +77,12 @@ function MapConfirm({
     >
       <DialogTitle id="alert-dialog-title">Confirm mapping</DialogTitle>
       <DialogContent>
-        {activeEvent && activeStubHubEvent
+        {activeEvent && activeExchangeEvent
     && (
-      <MapTable left="Uptick" right="StubHub">
-        <Row left={activeEvent.event} right={activeStubHubEvent.event} />
-        <Row left={activeEvent.venue} right={activeStubHubEvent.venue} />
-        <Row left={dateformat(activeEvent.eventDate)} right={dateformat(activeStubHubEvent.eventDate)} />
+      <MapTable left="Uptick" right="Exchange">
+        <Row left={activeEvent.event} right={activeExchangeEvent.event} />
+        <Row left={activeEvent.venue} right={activeExchangeEvent.venue} />
+        <Row left={dateformat(activeEvent.eventDate)} right={dateformat(activeExchangeEvent.eventDate)} />
 
       </MapTable>
     )}
@@ -103,7 +103,7 @@ MapConfirm.propTypes = {
   toggleMapDialogOpen: PropTypes.func.isRequired,
   mapDialogOpen: PropTypes.bool.isRequired,
   activeEvent: PropTypes.object.isRequired,
-  activeStubHubEvent: PropTypes.object.isRequired,
+  activeExchangeEvent: PropTypes.object.isRequired,
 };
 
 export default MapConfirm;

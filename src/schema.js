@@ -4,7 +4,7 @@ import {
 } from 'graphql';
 
 import events from './queries/events/schema';
-import stubhub from './queries/stubhub/schema';
+import exchange from './queries/exchange/schema';
 import user from './queries/user/schema';
 
 export default new GraphQLSchema({
@@ -12,7 +12,7 @@ export default new GraphQLSchema({
     name: 'RootQueryType',
     fields: {
       ...events.queries,
-      ...stubhub.queries,
+      ...exchange.queries,
       ...user.queries,
     },
   }),

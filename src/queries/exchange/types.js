@@ -4,7 +4,7 @@ import {
 import { GraphQLInt, GraphQLString } from 'graphql/type';
 
 const StubHubEventType = new GraphQLObjectType({
-  name: 'StubHubEvent',
+  name: 'ExchangeEvent',
   fields: {
     exchangeEventId: {
       type: GraphQLInt,

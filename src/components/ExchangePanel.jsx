@@ -6,31 +6,31 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { format } from 'date-fns';
 import EventContext from '../context/EventContext';
 import Error from './Error';
-import StubHubEvent from './StubHubEvent';
+import ExchangeEvent from './ExchangeEvent';
 import SearchInput from './SearchInput';
-import { useStubHub } from '../context/StubHubContext';
+import { useExchange } from '../context/ExchangeContext';
 
-const SEARCH_QUERY = `query findStubHubEvents($offset: Int, $event: String, $venue: String, $dateFrom: String, $dateTo: String, $order: String) {
-   findStubHubEvents(offset: $offset, event: $event, venue: $venue, dateFrom: $dateFrom, dateTo: $dateTo, order: $order){
+const SEARCH_QUERY = `query findExchangeEvents($offset: Int, $event: String, $venue: String, $dateFrom: String, $dateTo: String, $order: String) {
+   findExchangeEvents(offset: $offset, event: $event, venue: $venue, dateFrom: $dateFrom, dateTo: $dateTo, order: $order){
       exchangeEventId, event, venue, eventDate
     }
   }`;
 
-function StubhubSearchFields() {
-  const { values: shValues, updateSearchValue } = useStubHub();
+function ExchangeSearchFields() {
+  const { values, updateSearchValue } = useExchange();
 
 
   return (
     <>
       <SearchInput
         label="Event Name"
-        value={shValues.event}
+        value={values.event}
         delayedChange={updateSearchValue('event')}
         delay={200}
       />
       <SearchInput
         label="Venue"
-        value={shValues.venue}
+        value={values.venue}
         delayedChange={updateSearchValue('venue')}
         delay={200}
       />
@@ -42,7 +42,7 @@ function StubhubSearchFields() {
         margin="normal"
         id="date-from"
         label="Date from"
-        value={shValues.dateFrom}
+        value={values.dateFrom}
         onChange={updateSearchValue('dateFrom')}
         KeyboardButtonProps={{
           'aria-label': 'change date',
@@ -56,7 +56,7 @@ function StubhubSearchFields() {
         margin="normal"
         id="date-to"
         label="Date to"
-        value={shValues.dateTo}
+        value={values.dateTo}
         onChange={updateSearchValue('dateTo')}
         KeyboardButtonProps={{
           'aria-label': 'change date',
@@ -66,16 +66,16 @@ function StubhubSearchFields() {
   );
 }
 
-function StubHubSearchResults() {
+function ExchangeSearchResults() {
   const {
     hasActiveEvent,
-    activeStubHubEvent,
-    setActiveStubHubEvent,
-    getActiveStubHubEventId,
+    activeExchangeEvent,
+    setActiveExchangeEvent,
+    getActiveExchangeEventId,
     toggleMapDialogOpen,
   } = useContext(EventContext);
 
-  const { values } = useStubHub();
+  const { values } = useExchange();
 
   const { loading, error, data } = useQuery(SEARCH_QUERY, {
     variables: {
@@ -90,15 +90,15 @@ function StubHubSearchResults() {
 
   if (loading) return (<CircularProgress />);
   if (error) return (<Error />);
-  if (data && data.findStubHubEvents) {
-    return data.findStubHubEvents.map(
+  if (data && data.findExchangeEvents) {
+    return data.findExchangeEvents.map(
       (event) => (
-        <StubHubEvent
-          getActiveStubHubEventId={getActiveStubHubEventId}
+        <ExchangeEvent
+          getActiveExchangeEventId={getActiveExchangeEventId}
           hasActiveEvent={hasActiveEvent}
-          activeStubHubEvent={activeStubHubEvent}
+          activeExchangeEvent={activeExchangeEvent}
           toggleMapDialogOpen={toggleMapDialogOpen}
-          setActiveStubHubEvent={setActiveStubHubEvent}
+          setActiveExchangeEvent={setActiveExchangeEvent}
           key={event.exchangeEventId}
           {...event}
         />
@@ -107,14 +107,14 @@ function StubHubSearchResults() {
   }
 }
 
-export default function Stubhub() {
+export default function Exchange() {
   return (
     <>
-      <StubhubSearchFields />
+      <ExchangeSearchFields />
       <div
         style={{ flexFlow: '1 0 auto', overflow: 'auto' }}
       >
-        <StubHubSearchResults />
+        <ExchangeSearchResults />
       </div>
     </>
   );

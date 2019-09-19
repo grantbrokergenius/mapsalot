@@ -2,9 +2,9 @@ import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { yesterday, twoyears } from '../utils/date';
 
-const StubHubContext = React.createContext([{}, () => {}]);
+const ExchangeContext = React.createContext([{}, () => {}]);
 
-const StubHubProvider = ({ children }) => {
+const ExchangeProvider = ({ children }) => {
   const [state, setState] = useState(
     {
       event: '',
@@ -16,18 +16,18 @@ const StubHubProvider = ({ children }) => {
   );
 
   return (
-    <StubHubContext.Provider value={[state, setState]}>
+    <ExchangeContext.Provider value={[state, setState]}>
       {children}
-    </StubHubContext.Provider>
+    </ExchangeContext.Provider>
   );
 };
 
-StubHubProvider.propTypes = {
+ExchangeProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const useStubHub = () => {
-  const [values, setValues] = useContext(StubHubContext);
+const useExchange = () => {
+  const [values, setValues] = useContext(ExchangeContext);
 
   const updateSearchValue = (name) => (val) => setValues({ ...values, [name]: val });
   const update = (newValues) => setValues({
@@ -42,4 +42,4 @@ const useStubHub = () => {
   };
 };
 
-export { StubHubContext, StubHubProvider, useStubHub };
+export { ExchangeContext, ExchangeProvider, useExchange };

@@ -12,10 +12,10 @@ import Authorized from './components/Authorized';
 import Header from './components/Header';
 import Login from './components/Login';
 import MapConfirm from './components/MapConfirm';
-import Stubhub from './components/StubHub';
+import ExchangePanel from './components/ExchangePanel';
 import Uptick from './components/Uptick';
 import EventContext from './context/EventContext';
-import { StubHubProvider } from './context/StubHubContext';
+import { ExchangeProvider } from './context/ExchangeContext';
 import { UptickProvider } from './context/UptickContext';
 
 
@@ -30,7 +30,7 @@ function App() {
   const { loading: vLoading, error: vError, data: vData } = useQuery(VERIFY_QUERY);
 
   const [activeEvent, setActiveEvent] = useState(null);
-  const [activeStubHubEvent, setActiveStubHubEvent] = useState(null);
+  const [activeExchangeEvent, setActiveExchangeEvent] = useState(null);
   const [mapDialogOpen, setMapDialogOpen] = useState(false);
   const [updateSearchEnabled, setUpdateSearchEnabled] = useState(true);
 
@@ -38,18 +38,18 @@ function App() {
 
   const hasActiveEvent = () => !!activeEvent;
   const getActiveEventId = () => activeEvent && activeEvent.bgEventId;
-  const getActiveStubHubEventId = () => activeStubHubEvent && activeStubHubEvent.exchangeEventId;
+  const getActiveExchangeEventId = () => activeExchangeEvent && activeExchangeEvent.exchangeEventId;
 
   const toggleUpdateSearchEnabled = () => setUpdateSearchEnabled(!updateSearchEnabled);
 
   const context = {
     activeEvent,
-    activeStubHubEvent,
+    activeExchangeEvent,
     setActiveEvent,
     hasActiveEvent,
     getActiveEventId,
-    setActiveStubHubEvent,
-    getActiveStubHubEventId,
+    setActiveExchangeEvent,
+    getActiveExchangeEventId,
     mapDialogOpen,
     toggleMapDialogOpen,
     updateSearchEnabled,
@@ -64,19 +64,19 @@ function App() {
           <Login />
         </Authorized>
         <Authorized>
-          <StubHubProvider>
+          <ExchangeProvider>
             <EventContext.Provider value={context}>
               <CssBaseline />
 
               <Header />
 
-              {activeEvent && activeStubHubEvent
+              {activeEvent && activeExchangeEvent
           && (
           <MapConfirm
             toggleMapDialogOpen={toggleMapDialogOpen}
             mapDialogOpen={mapDialogOpen}
             activeEvent={activeEvent}
-            activeStubHubEvent={activeStubHubEvent}
+            activeExchangeEvent={activeExchangeEvent}
           />
           )}
 
@@ -91,13 +91,13 @@ function App() {
                 </Grid>
 
                 <Grid item style={{ width: '50%' }}>
-                  <Paper className="stubhub">
-                    <Stubhub />
+                  <Paper className="Exchange">
+                    <ExchangePanel />
                   </Paper>
                 </Grid>
               </Grid>
             </EventContext.Provider>
-          </StubHubProvider>
+          </ExchangeProvider>
         </Authorized>
       </Auth>
     );

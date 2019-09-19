@@ -12,7 +12,7 @@ import EventContext from '../context/EventContext';
 import Error from './Error';
 import SearchInput from './SearchInput';
 import { useUptick } from '../context/UptickContext';
-import { useStubHub } from '../context/StubHubContext';
+import { useExchange } from '../context/ExchangeContext';
 
 const LIST_QUERY = 'query List($offset: Int) { list(offset: $offset){ bgEventId, event, venue, eventDate, flagged } }';
 
@@ -68,7 +68,7 @@ function UptickSearchFields() {
 function UptickResults({
   offset, activeEventId, setActiveEvent,
 }) {
-  const { update: updateSHSearch } = useStubHub();
+  const { update: updateExchangeSearch } = useExchange();
   const { updateSearchEnabled } = useContext(EventContext);
 
   const { values } = useUptick();
@@ -76,7 +76,7 @@ function UptickResults({
   const setSelected = (event) => {
     setActiveEvent(event);
     if (updateSearchEnabled) {
-      updateSHSearch({
+      updateExchangeSearch({
         event: event.event,
         venue: event.venue,
         dateFrom: new Date(Number(event.eventDate)),

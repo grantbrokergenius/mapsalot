@@ -9,20 +9,20 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import { dateformat } from '../utils/date';
 
-const openLink = (id) => window.open(`https://stubhub.com/event/${id}`, '_blank');
+const openLink = (id) => window.open(`https://Exchange.com/event/${id}`, '_blank');
 
-function StubHubEvent({
-  getActiveStubHubEventId,
+function ExchangeEvent({
+  getActiveExchangeEventId,
   hasActiveEvent,
   toggleMapDialogOpen,
-  setActiveStubHubEvent,
+  setActiveExchangeEvent,
   exchangeEventId, event, venue, eventDate,
 }) {
-  const handleClick = () => setActiveStubHubEvent({
+  const handleClick = () => setActiveExchangeEvent({
     exchangeEventId, event, venue, eventDate,
   });
 
-  const selected = getActiveStubHubEventId() === exchangeEventId;
+  const selected = getActiveExchangeEventId() === exchangeEventId;
 
   return (
     <ListItem selected={selected} button key={exchangeEventId} onClick={handleClick}>
@@ -36,8 +36,8 @@ function StubHubEvent({
             </IconButton>
           </Tooltip>
         )}
-        <Tooltip title="View on StubHub">
-          <IconButton aria-label="open stubhub" onClick={() => openLink(exchangeEventId)}>
+        <Tooltip title="View on Exchange">
+          <IconButton aria-label="open Exchange" onClick={() => openLink(exchangeEventId)}>
             <LaunchIcon />
           </IconButton>
         </Tooltip>
@@ -46,15 +46,15 @@ function StubHubEvent({
   );
 }
 
-StubHubEvent.propTypes = {
-  getActiveStubHubEventId: PropTypes.func.isRequired,
+ExchangeEvent.propTypes = {
+  getActiveExchangeEventId: PropTypes.func.isRequired,
   hasActiveEvent: PropTypes.func.isRequired,
   toggleMapDialogOpen: PropTypes.func.isRequired,
-  setActiveStubHubEvent: PropTypes.func.isRequired,
+  setActiveExchangeEvent: PropTypes.func.isRequired,
   exchangeEventId: PropTypes.number.isRequired,
   event: PropTypes.string.isRequired,
   venue: PropTypes.string.isRequired,
   eventDate: PropTypes.string.isRequired,
 };
 
-export default StubHubEvent;
+export default ExchangeEvent;

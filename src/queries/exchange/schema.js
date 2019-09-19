@@ -3,14 +3,14 @@ import {
 } from 'graphql';
 
 import { GraphQLInt } from 'graphql/type';
-import StubHubEventType from './types';
+import ExchangeEventType from './types';
 import findEvents from './stubhub';
 
 const combineDates = (dateFrom, dateTo) => [dateFrom, dateTo].join(' TO ');
 
 const queries = {
-  findStubHubEvents: {
-    type: GraphQLList(StubHubEventType),
+  findExchangeEvents: {
+    type: GraphQLList(ExchangeEventType),
     args: {
       limit: { type: GraphQLInt },
       offset: { type: GraphQLInt },
