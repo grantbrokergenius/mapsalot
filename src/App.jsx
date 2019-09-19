@@ -16,9 +16,7 @@ import Stubhub from './components/StubHub';
 import Uptick from './components/Uptick';
 import EventContext from './context/EventContext';
 import { StubHubProvider } from './context/StubHubContext';
-import { StubHubSearchValuesProvider } from './context/StubHubSearchValuesContext';
 import { UptickProvider } from './context/UptickContext';
-import { UptickSearchValuesProvider } from './context/UptickSearchValuesContext';
 
 
 const client = new GraphQLClient({
@@ -63,13 +61,12 @@ function App() {
         </Authorized>
         <Authorized>
           <StubHubProvider>
-            <StubHubSearchValuesProvider>
-              <EventContext.Provider value={context}>
-                <CssBaseline />
+            <EventContext.Provider value={context}>
+              <CssBaseline />
 
-                <Header />
+              <Header />
 
-                {activeEvent && activeStubHubEvent
+              {activeEvent && activeStubHubEvent
           && (
           <MapConfirm
             toggleMapDialogOpen={toggleMapDialogOpen}
@@ -80,25 +77,22 @@ function App() {
           )}
 
 
-                <Grid container style={{ height: 'calc(100% - 114px)' }}>
-                  <Grid item style={{ height: '100%', width: '50%' }}>
-                    <Paper className="uptick" style={{ height: '100%', flexFlow: 'column', display: 'flex' }}>
-                      <UptickSearchValuesProvider>
-                        <UptickProvider>
-                          <Uptick />
-                        </UptickProvider>
-                      </UptickSearchValuesProvider>
-                    </Paper>
-                  </Grid>
-
-                  <Grid item style={{ height: '100%', width: '50%' }}>
-                    <Paper className="stubhub">
-                      <Stubhub />
-                    </Paper>
-                  </Grid>
+              <Grid container style={{ height: 'calc(100vh - 214px)' }}>
+                <Grid item style={{width: '50%', overflow: 'auto' }}>
+                  <Paper className="uptick">
+                    <UptickProvider>
+                      <Uptick />
+                    </UptickProvider>
+                  </Paper>
                 </Grid>
-              </EventContext.Provider>
-            </StubHubSearchValuesProvider>
+
+                <Grid item style={{ width: '50%' }}>
+                  <Paper className="stubhub">
+                    <Stubhub />
+                  </Paper>
+                </Grid>
+              </Grid>
+            </EventContext.Provider>
           </StubHubProvider>
         </Authorized>
       </Auth>
