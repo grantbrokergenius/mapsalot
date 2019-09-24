@@ -14,9 +14,10 @@ describe('authWithUser', () => {
   test('without user', () => {
     const fn = jest.fn();
     const ctx = { session: {} };
-
-    const authFunc = authWithUser(fn);
-    authFunc(ctx, authFunc);
+    expect(() => {
+      const authFunc = authWithUser(fn);
+      authFunc(ctx, authFunc);
+    }).toThrow(Error);
     expect(fn).not.toHaveBeenCalled();
   });
 });
