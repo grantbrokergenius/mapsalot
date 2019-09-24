@@ -5,13 +5,13 @@ import TextField from '@material-ui/core/TextField';
 function SearchInput({
   delayedChange, label, value, delay,
 }) {
-  const [timer, setTimer] = React.useState(null);
   const [val, setVal] = React.useState(value);
+  const timer = React.useRef(false);
 
   const handleChangeEvent = (e) => {
     const v = e.target.value;
-    clearTimeout(timer);
-    setTimer(setTimeout(() => delayedChange(v), delay));
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => delayedChange(v), delay);
     setVal(v);
   };
   useEffect(() => {

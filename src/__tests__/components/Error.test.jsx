@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Error from '../../src/components/Error';
+import Error from '../../components/Error';
 
 describe('error', () => {
   test('renders', () => {

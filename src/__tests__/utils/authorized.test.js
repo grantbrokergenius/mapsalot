@@ -1,4 +1,4 @@
-import { auth, authWithUser } from '../../src/utils/authorized';
+import { auth, authWithUser } from '../../utils/authorized';
 
 describe('authWithUser', () => {
   test('with user', () => {

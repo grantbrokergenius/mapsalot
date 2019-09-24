@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Event from '../../src/components/Event';
+import Event from '../../components/Event';
 
 describe('event', () => {
-  test('error renders', () => {
+  test('renders', () => {
     const wrapper = mount(<Event
       setSelected={() => {}}
       activeEventId={20}

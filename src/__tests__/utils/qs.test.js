@@ -1,4 +1,4 @@
-import qs from '../../src/utils/qs';
+import qs from '../../utils/qs';
 
 describe('qs', () => {
   test('simple query string', () => {

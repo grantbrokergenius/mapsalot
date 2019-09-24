@@ -1,4 +1,4 @@
-import { dateformat } from '../../src/utils/date';
+import { dateformat } from '../../utils/date';
 
 describe('date', () => {
   test('test', () => {
