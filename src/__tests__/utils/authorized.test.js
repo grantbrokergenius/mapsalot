@@ -36,8 +36,10 @@ describe('auth', () => {
     const fn = jest.fn();
     const ctx = { session: {} };
 
-    const authFunc = auth(fn);
-    authFunc(ctx, authFunc);
+    expect(() => {
+      const authFunc = auth(fn);
+      authFunc(ctx, authFunc);
+    }).toThrow(Error);
     expect(fn).not.toHaveBeenCalled();
   });
 });

@@ -10,6 +10,7 @@ describe('event', () => {
       bgEventId={12}
       event="Bon Jovi"
       venue="Red Rocks"
+      flagged={false}
       eventDate={`${new Date().getTime()}`}
     />); // mount/render/shallow when applicable
     expect(wrapper).toIncludeText('Bon Jovi');
