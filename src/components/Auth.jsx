@@ -9,22 +9,23 @@ const LOGOUT_QUERY = 'query Logout { logout }';
 
 
 function Auth({ activeSession, children }) {
-  const [activeUser, setActiveUser] = useState(activeSession);
-  const [loginFailed, setLoginFailed] = useState(false);
+  const [{ activeUser, loginFailed }, setUserState] = useState({
+    activeUser: activeSession,
+    loginFailed: false,
+  });
   const [loginQuery] = useManualQuery(LOGIN_QUERY);
   const [logoutQuery] = useManualQuery(LOGOUT_QUERY);
 
-  const invalidate = async () => logoutQuery({}).then(() => setActiveUser(null));
+  const invalidate = async () => logoutQuery({})
+    .then(() => setUserState({ activeUser: false, loginFailed: false }));
 
 
   const login = async (details) => {
     const { data, error } = await loginQuery({ variables: details });
     if (error || data.login === false) {
-      invalidate();
-      setLoginFailed(true);
+      setUserState({ activeUser: false, loginFailed: true });
     } else {
-      setActiveUser(true);
-      setLoginFailed(false);
+      setUserState({ activeUser: true, loginFailed: false });
     }
   };
 
