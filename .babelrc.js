@@ -3,7 +3,7 @@ const presets = [
   ["@babel/preset-env", {
     "targets": {
       "node": "current"
-    }
+    },
   }]
 ];
 const plugins = ["@babel/plugin-proposal-class-properties"];
@@ -23,7 +23,9 @@ if (process.env.NODE_ENV !== "test") {
       }
     }
   ]);
-}
+};
 
 
-module.exports = { presets, plugins };
+
+module.exports = { presets, plugins,     "sourceMaps": "inline",
+"retainLines": true };
