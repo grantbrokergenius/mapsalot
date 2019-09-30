@@ -81,17 +81,17 @@ function App() {
           )}
 
 
-              <Grid container style={{ height: 'calc(100vh - 214px)' }}>
-                <Grid item style={{ width: '50%', overflow: 'auto' }}>
-                  <Paper className="uptick">
+              <Grid container style={{ flex: '0 0 auto', display: 'flex', flexFlow: 'row nowrap' }}>
+                <Grid item style={{ flex: 1 }}>
+                  <Paper className="uptick" style={{ height: 'calc(100vh - 116px)', flex: '1 1 auto', display: 'flex', flexFlow: 'column' }}>
                     <UptickProvider>
                       <Uptick />
                     </UptickProvider>
                   </Paper>
                 </Grid>
 
-                <Grid item style={{ width: '50%' }}>
-                  <Paper className="Exchange">
+                <Grid item style={{ flex: 1 }}>
+                  <Paper className="Exchange" style={{ height: 'calc(100vh - 116px)', flex: '1 1 auto', display: 'flex', flexFlow: 'column' }}>
                     <ExchangePanel />
                   </Paper>
                 </Grid>

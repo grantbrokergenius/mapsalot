@@ -3,17 +3,14 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import { useQuery } from 'graphql-hooks';
-
-import {
-  CircularProgress,
-} from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { format } from 'date-fns';
 import Event from './Event';
 import EventContext from '../context/EventContext';
 import Error from './Error';
 import SearchInput from './SearchInput';
 import { useUptick } from '../context/UptickContext';
 import { useExchange } from '../context/ExchangeContext';
-import { format } from 'date-fns';
 
 const FIND_QUERY = `query Find($offset: Int, $event: String, $venue: String, $dateFrom: String, $dateTo: String) {
    find(offset: $offset, event: $event, venue: $venue, dateFrom: $dateFrom, dateTo: $dateTo){ bgEventId, event, venue, eventDate, flagged }
@@ -68,9 +65,7 @@ function UptickSearchFields() {
   );
 }
 
-function UptickResults({
-  offset, activeEventId, setActiveEvent,
-}) {
+function UptickResults({ offset, activeEventId, setActiveEvent }) {
   const { update: updateExchangeSearch } = useExchange();
   const { updateSearchEnabled } = useContext(EventContext);
 
@@ -99,23 +94,23 @@ function UptickResults({
   });
 
   return (
-    <div style={{ flexFlow: '1 0 auto', overflow: 'auto' }}>
+    <div style={{ flexFlow: '1 1 auto', height: '100%', overflow: 'auto' }}>
       {loading && <CircularProgress />}
       {error && <Error />}
       {data
-    && data.find
-    && data.find.map((event) => (
-      <Event
-        key={event.bgEventId}
-        activeEventId={activeEventId}
-        setSelected={setSelected}
-        bgEventId={event.bgEventId}
-        event={event.event}
-        venue={event.venue}
-        eventDate={event.eventDate}
-        flagged={event.flagged}
-      />
-    ))}
+        && data.find
+        && data.find.map((event) => (
+          <Event
+            key={event.bgEventId}
+            activeEventId={activeEventId}
+            setSelected={setSelected}
+            bgEventId={event.bgEventId}
+            event={event.event}
+            venue={event.venue}
+            eventDate={event.eventDate}
+            flagged={event.flagged}
+          />
+        ))}
     </div>
   );
 }
@@ -131,20 +126,21 @@ export default function Uptick() {
 
   const [offset, setOffset] = useState(0);
 
-
   const { setActiveEvent, activeEvent } = useContext(EventContext);
 
   const activeEventId = activeEvent && activeEvent.bgEventId;
 
   return (
     <>
-      <UptickSearchFields />
+      <div style={{ flexFlow: '0 0 auto' }}>
+        <UptickSearchFields />
+      </div>
       <UptickResults
         offset={offset}
         activeEventId={activeEventId}
         setActiveEvent={setActiveEvent}
       />
-      <div style={{ flexFlow: '0 1 140px' }}>
+      <div style={{ flexFlow: '0 0 auto' }}>
         <Button
           variant="contained"
           color="primary"

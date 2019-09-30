@@ -111,7 +111,9 @@ function ExchangeSearchResults() {
 export default function Exchange() {
   return (
     <>
-      <ExchangeSearchFields />
+      <div style={{ flexFlow: '0 0 auto' }}>
+        <ExchangeSearchFields />
+      </div>
       <div
         style={{ flexFlow: '1 0 auto', overflow: 'auto' }}
       >
